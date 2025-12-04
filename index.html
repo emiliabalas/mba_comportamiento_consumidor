@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Navegación del Informe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tech-black: #050505;
+            --tech-dark: #111111;
+            --tech-green: #00ff88;
+            --tech-text: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background-color: var(--tech-black);
+            color: var(--tech-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .card {
+            background-color: var(--tech-dark);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--tech-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .neon-title {
+            color: var(--tech-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="text-5xl font-extrabold mb-4">INFORME ESTRATÉGICO</h1>
+        <h2 class="text-2xl neon-title mb-12">NAVEGACIÓN DE LOS MÓDULOS</h2>
+
+        <p class="text-lg text-gray-400 mb-10">
+            Seleccione el módulo o taller al que desea acceder para ver el análisis de mercado y la estrategia de Platzi.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Link 1: Resumen P1, P2, P3 -->
+            <a href="resumen_p1_p2_P3.html" class="card block group">
+                <div class="text-5xl mb-4 group-hover:neon-title">📊</div>
+                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
+                    MÓDULO 1 & 2
+                </h3>
+                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                    Análisis de Mercado (P1), Psicología del Consumidor (P2) y Respuesta Estratégica (P3).
+                </p>
+                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
+                    IR A RESUMEN P1, P2, P3
+                </div>
+            </a>
+
+            <!-- Link 2: Práctica 3 (Netnografía) -->
+            <a href="practica3.html" class="card block group">
+                <div class="text-5xl mb-4 group-hover:neon-title">⚡</div>
+                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
+                    TALLER 3: NETNOGRAFÍA
+                </h3>
+                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                    Decodificación de la "Tribu Digital" (Los Antigodínez Tech), Códigos Culturales y Matriz Estratégica.
+                </p>
+                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
+                    IR A PRÁCTICA 3
+                </div>
+            </a>
+            
+        </div>
+        
+        <p class="text-xs text-gray-600 mt-16">
+            Documentación elaborada por Vianca Camacho Rios y Emilia Gamarra Balas para Platzi.
+        </p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Netnografía: Tribu Platzi Bolivia</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        platzi: {
+                            DEFAULT: '#98ca3f',
+                            dark: '#7da633',
+                            light: '#b4e063'
+                        },
+                        dark: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .code-snippet {
+            background-color: #0d1117;
+            border-left: 3px solid #98ca3f;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #98ca3f;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-platzi selection:text-dark-900">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
+        <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="terminal" class="text-platzi"></i>
+                <span class="font-mono font-bold text-lg tracking-tighter">NETNO<span class="text-platzi">REPORT</span>_BO</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-slate-400">
+                <a href="#resumen" class="hover:text-platzi transition-colors">Resumen</a>
+                <a href="#tribu" class="hover:text-platzi transition-colors">La Tribu</a>
+                <a href="#codigos" class="hover:text-platzi transition-colors">Códigos</a>
+                <a href="#lideres" class="hover:text-platzi transition-colors">Líderes</a>
+                <a href="#estrategia" class="hover:text-platzi transition-colors">Estrategia</a>
+            </div>
+            <div class="text-xs font-mono text-slate-500 border border-slate-700 px-2 py-1 rounded">
+                v2025.12
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 px-6 overflow-hidden">
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-platzi/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="container mx-auto text-center max-w-4xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-platzi/10 text-platzi text-xs font-mono mb-6 border border-platzi/20">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-platzi opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-platzi"></span>
+                </span>
+                CONFIDENCIAL // NETNOGRAFÍA ACELERADA
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                Decodificando la <span class="text-transparent bg-clip-text bg-gradient-to-r from-platzi to-emerald-400">Tribu Digital</span> de Platzi en Bolivia
+            </h1>
+            <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
+                Un análisis profundo sobre el miedo a la irrelevancia, la supervivencia tecnológica y los "Antigodinez Tech".
+            </p>
+
+            <!-- Metadata Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto border-t border-slate-800 pt-8 font-mono text-xs md:text-sm text-left">
+                <div>
+                    <span class="block text-slate-500 mb-1">CLIENTE</span>
+                    <span class="text-white">Platzi Bolivia</span>
+                </div>
+                <div>
+                    <span class="block text-slate-500 mb-1">MATERIA</span>
+                    <span class="text-white">Comportamiento del Consumidor</span>
+                </div>
+                <div>
+                    <span class="block text-slate-500 mb-1">FECHA</span>
+                    <span class="text-white">Dic 2025</span>
+                </div>
+                <div>
+                    <span class="block text-slate-500 mb-1">AUTORAS</span>
+                    <span class="text-white">V. Camacho, E. Gamarra</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 pb-20 space-y-24">
+
+        <!-- Resumen Ejecutivo -->
+        <section id="resumen" class="reveal">
+            <div class="glass-panel p-8 rounded-2xl border-l-4 border-platzi">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <i data-lucide="file-text" class="text-platzi"></i> Resumen Ejecutivo
+                </h2>
+                <p class="text-slate-300 leading-relaxed mb-4">
+                    La audiencia no debe ser segmentada por demografía, sino por su dolor compartido: 
+                    <span class="text-white font-semibold">miedo a la crisis e irrelevancia laboral</span>.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    La tribu identificada, <span class="font-mono text-platzi">"LOS ANTIGODINEZ TECH"</span>, valora la <span class="font-bold text-white">VELOCIDAD</span> como suprema. Ven la educación tech como supervivencia, no como academia. La marca debe migrar de "Prometer Futuro" a <span class="bg-platzi/20 text-platzi px-1 rounded">"Garantizar Presente"</span>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Identidad de la Tribu -->
+        <section id="tribu" class="reveal">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8">
+                <div>
+                    <h3 class="font-mono text-platzi text-sm mb-2">02. PERFILAMIENTO</h3>
+                    <h2 class="text-3xl font-bold">Identidad: Los "Antigodinez Tech"</h2>
+                </div>
+                <div class="mt-4 md:mt-0">
+                     <span class="px-4 py-2 bg-slate-800 rounded-lg text-xs font-mono text-slate-400 border border-slate-700">
+                        Contexto: Bolivia 2025 (Crisis & Adaptación)
+                     </span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-slate-800 p-6 rounded-xl">
+                    <h4 class="text-xl font-semibold mb-3 text-white">Justificación Antropológica</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        No son "estudiantes". Son supervivientes. Su acumulación de habilidades (upskilling) es defensa propia contra la IA y la devaluación de la moneda. Buscan "hackear" el sistema para ganar en dólares desde Bolivia.
+                    </p>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl border border-red-500/20">
+                    <h4 class="text-xl font-semibold mb-3 text-red-400">El Enemigo Común</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="skull" class="text-red-500 w-5 h-5 mt-1"></i>
+                            <div>
+                                <span class="block text-white font-medium">La Burocracia (El Dinosaurio)</span>
+                                <span class="text-xs text-slate-500">Odio a la universidad tradicional ("Titulitis").</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="trending-down" class="text-red-500 w-5 h-5 mt-1"></i>
+                            <div>
+                                <span class="block text-white font-medium">La Jaula de la Moneda Local</span>
+                                <span class="text-xs text-slate-500">Lucha contra la inflación. Meta: Dólares.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="coffee" class="text-red-500 w-5 h-5 mt-1"></i>
+                            <div>
+                                <span class="block text-white font-medium">El Estancamiento (El Godínez)</span>
+                                <span class="text-xs text-slate-500">Miedo a la mediocridad y al reemplazo por IA.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Netnografía y Códigos (UPDATED) -->
+        <section id="codigos" class="reveal">
+            <div class="mb-10">
+                <h3 class="font-mono text-platzi text-sm mb-2">03. NETNOGRAFÍA</h3>
+                <h2 class="text-3xl font-bold">Códigos y Lenguaje</h2>
+                <p class="text-slate-400 mt-2">Sentimiento: Escepticismo Transaccional y Ansiedad.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Card 1: Semiótica (Casos) -->
+                <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    
+                    <!-- Caso: La Obsesión IA -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-platzi/50 transition-colors group">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-white font-bold text-lg">La Obsesión "IA"</h4>
+                            <i data-lucide="cpu" class="text-platzi group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-3">No es una herramienta, es el <span class="text-white font-semibold">Estándar de Supervivencia</span>. El código cultural dicta que si no integras IA hoy, mañana eres obsoleto.</p>
+                        <div class="bg-slate-900/50 p-2 rounded border border-slate-800 text-xs font-mono text-slate-500">
+                            "La IA va más rápido que las publicidades..."
+                        </div>
+                    </div>
+
+                    <!-- Caso: El Certificado -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-platzi/50 transition-colors group">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-white font-bold text-lg">El Certificado</h4>
+                            <i data-lucide="award" class="text-platzi group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-3">Funciona como <span class="text-white font-semibold">Moneda de Cambio</span>. Priorizan la validación externa (el badge para LinkedIn) sobre la profundidad académica.</p>
+                        <div class="bg-slate-900/50 p-2 rounded border border-slate-800 text-xs font-mono text-slate-500">
+                            Caso: Quejas por bloqueo de examen final.
+                        </div>
+                    </div>
+
+                    <!-- Caso: Plan Familiar -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-platzi/50 transition-colors group">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-white font-bold text-lg">"Plan Familiar"</h4>
+                            <i data-lucide="users" class="text-platzi group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-3">Código para <span class="text-white font-semibold">Hack Económico</span>. No buscan familia, buscan desconocidos para dividir costos y acceder ya.</p>
+                        <div class="bg-slate-900/50 p-2 rounded border border-slate-800 text-xs font-mono text-slate-500">
+                            "Busco 2 personas para plan familiar 🔥"
+                        </div>
+                    </div>
+
+                    <!-- Caso: DM & Fuego -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-platzi/50 transition-colors group">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-white font-bold text-lg">DM & Emoji 🔥</h4>
+                            <i data-lucide="flame" class="text-platzi group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-3">Señales de <span class="text-white font-semibold">Negocio Rápido</span>. El fuego indica oportunidad urgente; el DM es el canal para cerrar tratos sin burocracia.</p>
+                        <div class="bg-slate-900/50 p-2 rounded border border-slate-800 text-xs font-mono text-slate-500">
+                            Transacción extraoficial inmediata.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Card 2: Valor Supremo -->
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-xl border border-platzi/30 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-platzi/5"></div>
+                    <i data-lucide="zap" class="w-12 h-12 text-platzi mb-4"></i>
+                    <h4 class="text-xl font-bold text-white mb-2">VELOCIDAD</h4>
+                    <p class="text-sm text-slate-400">El valor supremo.</p>
+                    <div class="w-full mt-4 space-y-2 text-xs font-mono text-left">
+                        <div class="flex justify-between"><span>Actualización</span> <span class="text-platzi">CRÍTICA</span></div>
+                        <div class="w-full bg-slate-700 h-1 rounded"><div class="bg-platzi h-1 rounded w-full"></div></div>
+                        <div class="flex justify-between"><span>Consumo</span> <span class="text-platzi">ALTA</span></div>
+                        <div class="w-full bg-slate-700 h-1 rounded"><div class="bg-platzi h-1 rounded w-3/4"></div></div>
+                        <div class="flex justify-between"><span>Transacción</span> <span class="text-platzi">INMEDIATA</span></div>
+                        <div class="w-full bg-slate-700 h-1 rounded"><div class="bg-platzi h-1 rounded w-11/12"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Líderes -->
+        <section id="lideres" class="reveal">
+            <h3 class="font-mono text-platzi text-sm mb-6">04. LIDERAZGO</h3>
+            <div class="bg-slate-800 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-center border border-slate-700">
+                <div class="w-24 h-24 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-2xl font-bold text-white shrink-0 shadow-lg shadow-blue-500/20">
+                    MD
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-2xl font-bold text-white">Miguel Ángel Durán (@midudev)</h3>
+                    <p class="text-platzi font-mono text-sm mb-4">El Líder de la Tribu / Micro-Influencer</p>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-slate-900 p-3 rounded border border-slate-700">
+                            <strong class="block text-white mb-1">Antídoto al Marketing</strong>
+                            <span class="text-slate-400">Vende realidad técnica, dice si algo es malo.</span>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded border border-slate-700">
+                            <strong class="block text-white mb-1">Velocidad</strong>
+                            <span class="text-slate-400">Explica lo nuevo al instante.</span>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded border border-slate-700">
+                            <strong class="block text-white mb-1">Accesibilidad</strong>
+                            <span class="text-slate-400">Es un "par" exitoso, no una corporación.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Matriz Estratégica -->
+        <section id="estrategia" class="reveal">
+            <h3 class="font-mono text-platzi text-sm mb-6">05. ESTRATEGIA</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-slate-400 font-mono">
+                            <th class="py-4 px-4 w-1/4">DIMENSIÓN</th>
+                            <th class="py-4 px-4 w-1/3 text-red-400">CÓDIGO TRIBU (AS-IS)</th>
+                            <th class="py-4 px-4 w-1/3 text-green-400">PROPUESTA MARCA (TO-BE)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr>
+                            <td class="py-4 px-4 font-bold text-white">Lenguaje</td>
+                            <td class="py-4 px-4 text-slate-400">Spanglish Técnico, Cortante. "Deploy", "Bug", "Precio".</td>
+                            <td class="py-4 px-4 text-white">"Senior Dev" Accesible. Verbos de acción. Cero adjetivos de marketing.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-bold text-white">Valores</td>
+                            <td class="py-4 px-4 text-slate-400">Vigencia y Prueba de Trabajo. "Show, don't tell".</td>
+                            <td class="py-4 px-4 text-white">Transparencia de Versión. Etiquetar fecha y versión tecnológica (Next.js 14).</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-bold text-white">Tabúes</td>
+                            <td class="py-4 px-4 text-slate-400">"Vende-humismo", Fricción, Paywalls sorpresa.</td>
+                            <td class="py-4 px-4 text-white">Prohibido "Upselling" Bloqueante. Soporte en Público.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-12 grid md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-platzi">
+                    <h4 class="text-lg font-bold text-white mb-2">A. Garantizar Presente</h4>
+                    <p class="text-slate-400 text-sm">Cambiar "Conviértete en experto" por <span class="text-white">"Aprende a integrar la API de GPT-4o hoy"</span>.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-platzi">
+                    <h4 class="text-lg font-bold text-white mb-2">B. Soporte en Público</h4>
+                    <p class="text-slate-400 text-sm">Romper el silencio burocrático. Resolver quejas técnicas en redes genera confianza.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Evidencia / Apéndice -->
+        <section id="evidencia" class="reveal">
+             <h3 class="font-mono text-platzi text-sm mb-6">APÉNDICE: EVIDENCIA</h3>
+             <div class="grid md:grid-cols-2 gap-6">
+                 <!-- Chat Bubble 1 -->
+                 <div class="bg-slate-800 p-4 rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-none relative ml-4">
+                    <div class="absolute top-0 left-0 -ml-2 mt-4 w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-l-transparent"></div>
+                    <p class="text-slate-300 italic text-sm">"Noto que cuando @platzi quiere mostrar una tecnología ya hay una mejor. La IA va más rápido que las publicidades qué hacen."</p>
+                    <span class="block text-right text-xs text-platzi mt-2 font-mono">- Nicolás Ariel Sena</span>
+                 </div>
+
+                 <!-- Chat Bubble 2 -->
+                 <div class="bg-slate-800 p-4 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-none relative mr-4 md:mr-0">
+                    <p class="text-slate-300 italic text-sm">"Busco 2 personas para comprar el plan familiar 🔥🔥🔥🙌 Escríbanme al dm"</p>
+                    <span class="block text-right text-xs text-platzi mt-2 font-mono">- Usuario Anónimo</span>
+                 </div>
+
+                 <!-- Chat Bubble 3 -->
+                 <div class="bg-slate-800 p-4 rounded-tl-xl rounded-tr-xl rounded-br-xl rounded-bl-none relative ml-4">
+                    <div class="absolute top-0 left-0 -ml-2 mt-4 w-0 h-0 border-t-[10px] border-t-slate-800 border-l-[10px] border-l-transparent"></div>
+                    <p class="text-slate-300 italic text-sm">"Ojo que cobran tarifa plena y dicen que están en promoción, después nadie contesta"</p>
+                    <span class="block text-right text-xs text-platzi mt-2 font-mono">- Escepticismo Transaccional</span>
+                 </div>
+             </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-900 py-10 text-center">
+        <p class="text-slate-600 text-sm font-mono">
+            &copy; 2025 Platzi Bolivia Netnography Report.<br>
+            <span class="text-xs">Uso interno exclusivo para Dirección de Marketing.</span>
+        </p>
+    </footer>
+
+    <script>
+        // Simple Reveal Animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

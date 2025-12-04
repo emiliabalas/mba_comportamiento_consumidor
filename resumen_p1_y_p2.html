@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platzi Bolivia 2025 | Informe Estratégico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Theme Configuration based on "Halo Effect" analysis */
+        :root {
+            --tech-black: #050505;
+            --tech-dark: #111111;
+            --tech-green: #00ff88;
+            --tech-green-dim: rgba(0, 255, 136, 0.1);
+            --tech-text: #e0e0e0;
+            --tech-gray: #333333;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background-color: var(--tech-black);
+            color: var(--tech-text);
+            overflow-x: hidden;
+        }
+
+        /* Utility Classes */
+        .neon-text {
+            color: var(--tech-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .neon-border {
+            border: 1px solid var(--tech-green);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.15);
+            border-color: var(--tech-green);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--tech-black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--tech-green);
+        }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Interactive Elements */
+        .nav-pill.active {
+            background-color: var(--tech-green);
+            color: var(--tech-black);
+            font-weight: 700;
+        }
+
+        .bani-quadrant {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .bani-quadrant:hover {
+            background-color: var(--tech-green-dim);
+        }
+        .bani-quadrant.active {
+            background-color: var(--tech-green);
+            color: var(--tech-black);
+        }
+        .bani-quadrant.active h3, .bani-quadrant.active p {
+            color: var(--tech-black);
+        }
+
+        /* Hook Model Animation */
+        .hook-step {
+            opacity: 0.4;
+            transition: all 0.5s ease;
+        }
+        .hook-step.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+    </style>
+    <!-- Chosen Palette: Dark Tech Survivalist -->
+    <!-- Application Structure Plan:
+         1. Header: Establish context and "Halo Effect" authority immediately.
+         2. Intel Dashboard: Interactive trends analysis using Chart.js to visualize the quantitative data (Talent gap, limits).
+         3. BANI Matrix: Interactive grid allowing users to click and reveal specific consumer vulnerabilities.
+         4. Psychology Center: Visualizing Maslow and the Hook Model to explain the "why" behind behavior.
+         5. Empathy Map: Tabbed interface to organize the qualitative user profile data without clutter.
+         6. Strategy Console: A final call to action summarizing the tactical response.
+         Why: This structure moves from the Macro (Market) to the Micro (Psychology) and ends with Action (Strategy), mirroring the report's logical flow but allowing non-linear exploration.
+    -->
+    <!-- Visualization & Content Choices:
+         - Trends: Bar/Doughnut charts to visualize the "Talent Gap" and "Payment Frictions". Goal: Show urgency.
+         - BANI: 2x2 Grid. Goal: Organize complex psychological states. Interaction: Click to reveal.
+         - Maslow: CSS Triangle stack. Goal: Hierarchical understanding. Interaction: Hover/Click to see "Digital Translation".
+         - Hook Model: Circular flow layout. Goal: Show the retention cycle. Interaction: Step-through animation.
+         - NO SVG/Mermaid used. All visuals are HTML/CSS or Chart.js Canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-[#050505] text-gray-300">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full bg-[#050505]/90 backdrop-blur-sm border-b border-[#333] z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 bg-[#00ff88] rounded-full animate-pulse"></div>
+                    <span class="text-white font-bold text-xl tracking-wider">PLATZI <span class="text-[#00ff88]">2025</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="flex items-baseline space-x-4">
+                        <button onclick="scrollToSection('market')" class="text-gray-300 hover:text-[#00ff88] px-3 py-2 rounded-md text-sm font-medium transition-colors">Inteligencia de Mercado</button>
+                        <button onclick="scrollToSection('psychology')" class="text-gray-300 hover:text-[#00ff88] px-3 py-2 rounded-md text-sm font-medium transition-colors">Psicología</button>
+                        <button onclick="scrollToSection('strategy')" class="bg-[#00ff88] text-black px-4 py-2 rounded-md text-sm font-bold hover:bg-[#00cc6a] transition-colors">Estrategia Táctica</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <div class="inline-block px-4 py-1 border border-[#00ff88] rounded-full mb-6 bg-[rgba(0,255,136,0.05)]">
+            <p class="text-[#00ff88] text-sm font-semibold tracking-wide uppercase">Informe Estratégico Integral</p>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+            DE LA EVOLUCIÓN A LA <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#009955]">ADAPTACIÓN FORZOSA</span>
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-400">
+            Análisis de mercado y psicología del consumidor para Bolivia 2025.
+            <br>
+            <span class="text-sm mt-2 block opacity-70">Por Vianca Camacho Rios & Emilia Gamarra Balas</span>
+        </p>
+    </header>
+
+    <!-- PART 1: MARKET INTELLIGENCE -->
+    <section id="market" class="py-16 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4 border-l-4 border-[#00ff88] pl-4">1. Inteligencia de Mercado</h2>
+                <p class="text-gray-400 max-w-3xl">
+                    El mercado no está evolucionando suavemente; está sufriendo un shock. Analizamos las tres macro-tendencias críticas (Económica, Social y Tecnológica) que están redefiniendo las reglas del juego para la educación online en Bolivia.
+                </p>
+            </div>
+
+            <!-- TRENDS GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Trend 1: Economic -->
+                <div class="bg-[#111] border border-[#333] rounded-xl p-6 card-hover group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-red-900/20 rounded-lg text-red-500">
+                            <span class="text-2xl">💰</span>
+                        </div>
+                        <span class="text-xs font-bold text-red-500 bg-red-900/10 px-2 py-1 rounded">CRÍTICO</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">El "Filtro Divisa"</h3>
+                    <p class="text-sm text-gray-400 mb-6">La escasez de dólares crea una barrera insalvable. Migración masiva a pagos locales.</p>
+                    
+                    <!-- Chart Container -->
+                    <div class="chart-container h-48">
+                        <canvas id="economicChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-2">Límites bancarios mensuales ($USD)</p>
+                </div>
+
+                <!-- Trend 2: Social -->
+                <div class="bg-[#111] border border-[#333] rounded-xl p-6 card-hover group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-blue-900/20 rounded-lg text-blue-500">
+                            <span class="text-2xl">🎓</span>
+                        </div>
+                        <span class="text-xs font-bold text-blue-500 bg-blue-900/10 px-2 py-1 rounded">OPORTUNIDAD</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Pragmatismo Radical</h3>
+                    <p class="text-sm text-gray-400 mb-6">Adiós "Titulitis". Auge de Bootcamps (3-6 meses) vs Maestrías (2 años).</p>
+                    
+                    <!-- Chart Container -->
+                    <div class="chart-container h-48">
+                        <canvas id="socialChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-2">Crecimiento Demanda Skills (%)</p>
+                </div>
+
+                <!-- Trend 3: Tech -->
+                <div class="bg-[#111] border border-[#333] rounded-xl p-6 card-hover group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-[#00ff88]/10 rounded-lg text-[#00ff88]">
+                            <span class="text-2xl">📱</span>
+                        </div>
+                        <span class="text-xs font-bold text-[#00ff88] bg-[#00ff88]/10 px-2 py-1 rounded">HABITO</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Mobile-First Extremo</h3>
+                    <p class="text-sm text-gray-400 mb-6">Rechazo al contenido pesado (Zoom/4K). Preferencia por Micro-learning asincrónico.</p>
+                    
+                    <div class="bg-[#050505] p-4 rounded-lg border border-[#333]">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-400">Penetración Móvil</span>
+                            <span class="text-[#00ff88] font-bold">>100%</span>
+                        </div>
+                        <div class="w-full bg-[#333] h-2 rounded-full mb-4">
+                            <div class="bg-[#00ff88] h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-400">Preferencia Offline</span>
+                            <span class="text-white font-bold">Alta</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">El aula es el celular, pero los datos cuestan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANI MATRIX INTERACTIVE -->
+            <div class="bg-[#111] rounded-2xl p-8 border border-[#333]">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <span class="bg-[#333] px-3 py-1 rounded text-sm">INTERACTIVO</span>
+                    El Filtro BANI: Vulnerabilidad del Consumidor
+                </h3>
+                <p class="text-gray-400 mb-8">Haga clic en cada cuadrante para revelar cómo se manifiesta la fragilidad del consumidor boliviano en 2025.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- B: Brittle -->
+                    <div onclick="selectBani('brittle')" id="bani-brittle" class="bani-quadrant bg-[#050505] border border-[#333] p-6 rounded-xl active">
+                        <div class="text-4xl font-black mb-2 opacity-20">B</div>
+                        <h4 class="text-xl font-bold text-white mb-2">BRITTLE (Frágil)</h4>
+                        <p class="text-sm text-gray-400">Fragilidad financiera extrema.</p>
+                    </div>
+                    
+                    <!-- A: Anxious -->
+                    <div onclick="selectBani('anxious')" id="bani-anxious" class="bani-quadrant bg-[#050505] border border-[#333] p-6 rounded-xl">
+                        <div class="text-4xl font-black mb-2 opacity-20">A</div>
+                        <h4 class="text-xl font-bold text-white mb-2">ANXIOUS (Ansioso)</h4>
+                        <p class="text-sm text-gray-400">Miedo a la irrelevancia por IA.</p>
+                    </div>
+
+                    <!-- N: Non-linear -->
+                    <div onclick="selectBani('nonlinear')" id="bani-nonlinear" class="bani-quadrant bg-[#050505] border border-[#333] p-6 rounded-xl">
+                        <div class="text-4xl font-black mb-2 opacity-20">N</div>
+                        <h4 class="text-xl font-bold text-white mb-2">NON-LINEAR (No lineal)</h4>
+                        <p class="text-sm text-gray-400">Rutas de aprendizaje caóticas.</p>
+                    </div>
+
+                    <!-- I: Incomprehensible -->
+                    <div onclick="selectBani('incomprehensible')" id="bani-incomprehensible" class="bani-quadrant bg-[#050505] border border-[#333] p-6 rounded-xl">
+                        <div class="text-4xl font-black mb-2 opacity-20">I</div>
+                        <h4 class="text-xl font-bold text-white mb-2">INCOMPREHENSIBLE</h4>
+                        <p class="text-sm text-gray-400">Confusión sistémica.</p>
+                    </div>
+                </div>
+
+                <!-- BANI Detail View -->
+                <div class="mt-8 bg-[#050505] p-6 rounded-xl border-l-4 border-[#00ff88]">
+                    <h4 id="bani-title" class="text-xl font-bold text-[#00ff88] mb-2">FRAGILIDAD FINANCIERA</h4>
+                    <p id="bani-desc" class="text-gray-300 mb-4">La capacidad de compra es quebradiza. Un pequeño cambio en la tasa o restricción bancaria rompe la relación.</p>
+                    <div class="bg-[#1a1a1a] p-3 rounded">
+                        <span class="text-xs text-gray-500 uppercase font-bold">Ejemplo Real:</span>
+                        <p id="bani-example" class="text-sm text-white italic">"Abandona la suscripción si falla el pago internacional y migra a opción local con QR."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PART 2: PSYCHOLOGY -->
+    <section id="psychology" class="py-16 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4 border-l-4 border-[#00ff88] pl-4">2. Psicología del Consumidor</h2>
+                <p class="text-gray-400 max-w-3xl">
+                    Decodificamos la "Caja Negra" del estudiante. No compran educación; compran supervivencia y estatus.
+                </p>
+            </div>
+
+            <!-- MASLOW 3.0 & PERCEPTION -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                
+                <!-- Maslow 3.0 -->
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-6">Motivación 3.0 (Maslow Digital)</h3>
+                    <div class="relative w-full max-w-md mx-auto h-80 flex flex-col-reverse gap-1">
+                        <!-- Top -->
+                        <div class="group h-1/4 w-1/3 mx-auto bg-gradient-to-t from-[#00ff88] to-[#00cc6a] clip-triangle-top flex items-center justify-center cursor-pointer transition-all hover:scale-105 hover:brightness-110 relative z-20">
+                            <span class="text-black font-bold text-xs text-center px-2">RECONOCIMIENTO<br>(Insignia LinkedIn)</span>
+                            <!-- Tooltip -->
+                            <div class="absolute bottom-full mb-2 w-48 bg-white text-black text-xs p-2 rounded hidden group-hover:block z-30">
+                                Proyectar identidad de "Talento Global Tech".
+                            </div>
+                        </div>
+                        <!-- Middle -->
+                        <div class="h-1/3 w-2/3 mx-auto bg-[#333] flex items-center justify-center border-t border-black opacity-30">
+                            <span class="text-gray-500 text-xs">SOCIAL (Irrelevante)</span>
+                        </div>
+                        <!-- Base -->
+                        <div class="group h-2/5 w-full bg-gradient-to-t from-red-900 to-red-700 flex items-center justify-center cursor-pointer transition-all hover:scale-105 hover:brightness-110 relative z-10">
+                            <span class="text-white font-bold text-sm">SEGURIDAD<br>(Seguro de Vida Laboral)</span>
+                            <!-- Tooltip -->
+                            <div class="absolute bottom-full mb-2 w-48 bg-white text-black text-xs p-2 rounded hidden group-hover:block z-30">
+                                Supervivencia contra la devaluación e inflación.
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center text-sm text-gray-400 mt-4">El usuario oscila entre la Base (Seguridad) y la Cúspide (Estatus).</p>
+                </div>
+
+                <!-- Perception Audit -->
+                <div class="bg-[#111] p-6 rounded-xl border border-[#333]">
+                    <h3 class="text-2xl font-bold text-white mb-6">Auditoría de Percepción</h3>
+                    
+                    <!-- Halo Effect -->
+                    <div class="mb-6 p-4 bg-[#050505] rounded-lg border-l-2 border-[#00ff88]">
+                        <h4 class="text-[#00ff88] font-bold mb-2">A. Efecto Halo (Estética)</h4>
+                        <div class="flex items-center gap-4">
+                            <div class="text-3xl">👀</div>
+                            <div>
+                                <p class="text-sm text-gray-300"><strong>Estímulo:</strong> Dark Mode + Neón.</p>
+                                <p class="text-sm text-gray-300"><strong>Interpretación:</strong> "Silicon Valley" / "Hacker".</p>
+                                <p class="text-xs text-gray-500 mt-1"><em>"Si la web es moderna, el contenido es vanguardista."</em></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cognitive Dissonance -->
+                    <div class="p-4 bg-[#050505] rounded-lg border-l-2 border-red-500">
+                        <h4 class="text-red-500 font-bold mb-2">B. Disonancia (Sacrificio)</h4>
+                        <div class="flex items-center gap-4">
+                            <div class="text-3xl">🧠</div>
+                            <div>
+                                <p class="text-sm text-gray-300"><strong>Conflicto:</strong> Estudiar solo vs. Ocio social.</p>
+                                <p class="text-sm text-gray-300"><strong>Resolución:</strong> Sesgo de Confirmación.</p>
+                                <p class="text-xs text-gray-500 mt-1"><em>"La autonomía es una habilidad superior. Soy un Héroe Disciplinado."</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOOK MODEL INTERACTIVE -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-bold text-white mb-8 text-center">El Modelo "Hook" (Ciclo de Hábito)</h3>
+                
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 relative">
+                    <!-- Steps -->
+                    <div onclick="animateHook(1)" id="hook-1" class="hook-step active cursor-pointer w-full md:w-1/4 bg-[#111] p-6 rounded-xl border-t-4 border-yellow-500 h-40 flex flex-col justify-between">
+                        <span class="text-2xl">🔔</span>
+                        <div>
+                            <h4 class="text-white font-bold">1. DISPARADOR</h4>
+                            <p class="text-xs text-gray-400">Miedo (Interno) o Notificación "Racha en peligro" (Externo).</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block text-[#333] text-2xl">➔</div>
+
+                    <div onclick="animateHook(2)" id="hook-2" class="hook-step cursor-pointer w-full md:w-1/4 bg-[#111] p-6 rounded-xl border-t-4 border-blue-500 h-40 flex flex-col justify-between">
+                        <span class="text-2xl">👆</span>
+                        <div>
+                            <h4 class="text-white font-bold">2. ACCIÓN</h4>
+                            <p class="text-xs text-gray-400">Abrir App (<10 min). Fricción Cero.</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block text-[#333] text-2xl">➔</div>
+
+                    <div onclick="animateHook(3)" id="hook-3" class="hook-step cursor-pointer w-full md:w-1/4 bg-[#111] p-6 rounded-xl border-t-4 border-[#00ff88] h-40 flex flex-col justify-between">
+                        <span class="text-2xl">🎁</span>
+                        <div>
+                            <h4 class="text-white font-bold">3. RECOMPENSA</h4>
+                            <p class="text-xs text-gray-400">Dopamina variable (Ranking, Badges).</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block text-[#333] text-2xl">➔</div>
+
+                    <div onclick="animateHook(4)" id="hook-4" class="hook-step cursor-pointer w-full md:w-1/4 bg-[#111] p-6 rounded-xl border-t-4 border-purple-500 h-40 flex flex-col justify-between">
+                        <span class="text-2xl">🛠️</span>
+                        <div>
+                            <h4 class="text-white font-bold">4. INVERSIÓN</h4>
+                            <p class="text-xs text-gray-400">Certificado a LinkedIn. Identidad digital construida.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <button onclick="playHookAnimation()" class="px-6 py-2 bg-[#333] hover:bg-[#444] text-white rounded-full text-sm font-bold transition-colors">
+                        ▶ Reproducir Ciclo
+                    </button>
+                </div>
+            </div>
+
+            <!-- EMPATHY MAP TABS -->
+            <div class="bg-[#111] rounded-2xl border border-[#333] overflow-hidden">
+                <div class="flex border-b border-[#333]">
+                    <button onclick="switchEmpathy('think')" id="tab-think" class="nav-pill active w-1/4 py-4 text-sm font-bold text-center transition-colors">PIENSA Y SIENTE</button>
+                    <button onclick="switchEmpathy('see')" id="tab-see" class="nav-pill w-1/4 py-4 text-sm font-bold text-center text-gray-500 transition-colors">VE</button>
+                    <button onclick="switchEmpathy('hear')" id="tab-hear" class="nav-pill w-1/4 py-4 text-sm font-bold text-center text-gray-500 transition-colors">OYE</button>
+                    <button onclick="switchEmpathy('say')" id="tab-say" class="nav-pill w-1/4 py-4 text-sm font-bold text-center text-gray-500 transition-colors">DICE Y HACE</button>
+                </div>
+                
+                <div class="p-8 min-h-[200px] flex items-center justify-center">
+                    <!-- Content injected via JS -->
+                    <div id="empathy-content" class="text-center max-w-2xl">
+                        <h4 class="text-2xl text-white font-bold mb-4">MIEDO Y ANSIEDAD</h4>
+                        <p class="text-gray-300 text-lg">"Si no aprendo IA, seré irrelevante."<br>"Quiero ganar en dólares para no depender del peso boliviano."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STRATEGY SECTION -->
+    <section id="strategy" class="py-16 bg-[#00ff88] text-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-black mb-8 uppercase">Respuesta Táctica: "Cero Fricción"</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-black/10 backdrop-blur p-6 rounded-xl border border-black/10">
+                    <div class="text-3xl mb-4">🇧🇴</div>
+                    <h3 class="font-bold text-xl mb-2">Precio Local</h3>
+                    <p class="text-sm font-medium opacity-80">Precios fijos en Bolivianos. Riesgo cambiario absorbido.</p>
+                </div>
+                <div class="bg-black text-[#00ff88] p-6 rounded-xl border border-black transform scale-110 shadow-2xl">
+                    <div class="text-3xl mb-4">📱</div>
+                    <h3 class="font-bold text-xl mb-2">QR Nativo</h3>
+                    <p class="text-sm font-medium">Integración directa de QR Simple. Sin pasar por redes de tarjetas internacionales.</p>
+                </div>
+                <div class="bg-black/10 backdrop-blur p-6 rounded-xl border border-black/10">
+                    <div class="text-3xl mb-4">🛡️</div>
+                    <h3 class="font-bold text-xl mb-2">Seguridad</h3>
+                    <p class="text-sm font-medium opacity-80">Mensaje clave: "Paga sin usar tu cupo en dólares".</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#050505] py-8 text-center border-t border-[#333]">
+        <p class="text-gray-600 text-sm">Platzi Bolivia 2025 | Análisis Estratégico</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. CHARTS CONFIGURATION (Chart.js) ---
+        // Data derived from the "Macro-trends" section of the report.
+        
+        // Chart 1: Economic - Payment Limits vs Cost
+        const ctxEco = document.getElementById('economicChart').getContext('2d');
+        new Chart(ctxEco, {
+            type: 'bar',
+            data: {
+                labels: ['Límite Tarjeta (Promedio)', 'Costo Maestría Global', 'Costo Bootcamp Local'],
+                datasets: [{
+                    label: 'USD $',
+                    data: [100, 500, 150], // $100 limit vs $500 cost shows the friction
+                    backgroundColor: ['#ef4444', '#333333', '#00ff88'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: '#333' }, ticks: { color: '#666' } },
+                    x: { grid: { display: false }, ticks: { color: '#999' } }
+                }
+            }
+        });
+
+        // Chart 2: Social - Demand Growth
+        const ctxSoc = document.getElementById('socialChart').getContext('2d');
+        new Chart(ctxSoc, {
+            type: 'doughnut',
+            data: {
+                labels: ['Soft Skills', 'IA Aplicada', 'Teoría Tradicional'],
+                datasets: [{
+                    data: [400, 350, 50], // >400% growth mentions
+                    backgroundColor: ['#00ff88', '#00cc6a', '#333333'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { position: 'right', labels: { color: '#999' } } 
+                }
+            }
+        });
+
+
+        // --- 2. BANI INTERACTION LOGIC ---
+        // Data from "El Filtro BANI" table in the report.
+        const baniData = {
+            brittle: {
+                title: "FRAGILIDAD FINANCIERA",
+                desc: "La capacidad de compra es quebradiza. Un pequeño cambio en la tasa o restricción bancaria rompe la relación.",
+                example: "\"Abandona la suscripción si falla el pago internacional y migra a opción local con QR.\""
+            },
+            anxious: {
+                title: "ANSIEDAD POR RELEVANCIA",
+                desc: "Miedo paralizante a la obsolescencia laboral por la IA. La educación se consume como un 'ansiolítico'.",
+                example: "\"Compra impulsiva de cursos de IA a las 2 AM tras ver contenido alarmista en redes.\""
+            },
+            nonlinear: {
+                title: "RUTA FRAGMENTADA",
+                desc: "El camino 'Universidad -> Trabajo' murió. El consumo es caótico y multicanal.",
+                example: "\"Aprende en TikTok + Mentoría Zoom + Bootcamp, saltándose la universidad.\""
+            },
+            incomprehensible: {
+                title: "CONFUSIÓN SISTÉMICA",
+                desc: "El usuario no entiende por qué su dinero vale menos. Busca simplificación extrema.",
+                example: "\"Busca proveedores que 'hablen su idioma' y cobren sin fricción técnica.\""
+            }
+        };
+
+        function selectBani(key) {
+            // Update UI styles
+            document.querySelectorAll('.bani-quadrant').forEach(el => el.classList.remove('active'));
+            document.getElementById(`bani-${key}`).classList.add('active');
+
+            // Update Content
+            const data = baniData[key];
+            document.getElementById('bani-title').innerText = data.title;
+            document.getElementById('bani-desc').innerText = data.desc;
+            document.getElementById('bani-example').innerText = data.example;
+        }
+
+
+        // --- 3. HOOK MODEL ANIMATION ---
+        let hookInterval;
+        
+        function animateHook(step) {
+            // Reset
+            document.querySelectorAll('.hook-step').forEach(el => {
+                el.classList.remove('active');
+                el.style.opacity = '0.4';
+            });
+            
+            // Activate specific
+            const activeEl = document.getElementById(`hook-${step}`);
+            activeEl.classList.add('active');
+            activeEl.style.opacity = '1';
+        }
+
+        function playHookAnimation() {
+            let step = 1;
+            animateHook(step);
+            if(hookInterval) clearInterval(hookInterval);
+            
+            hookInterval = setInterval(() => {
+                step++;
+                if (step > 4) step = 1;
+                animateHook(step);
+            }, 1500); // Change every 1.5 seconds
+        }
+
+
+        // --- 4. EMPATHY MAP TABS ---
+        // Data from "Mapa de Empatía" in the report.
+        const empathyData = {
+            think: {
+                title: "MIEDO Y ANSIEDAD",
+                content: "\"Si no aprendo IA, seré irrelevante.\"<br>\"Quiero ganar en dólares para no depender del peso boliviano.\""
+            },
+            see: {
+                title: "EL ENTORNO",
+                content: "Amigos con trabajos remotos en LinkedIn.<br>Noticias de crisis económica. Publicidad de universidades caras."
+            },
+            hear: {
+                title: "RUIDO EXTERNO",
+                content: "\"La universidad es una estafa\".<br>Presión familiar por seguridad tradicional. Mercado pidiendo Seniors."
+            },
+            say: {
+                title: "COMPORTAMIENTO",
+                content: "Dice: \"Estoy en tecnología\".<br>Hace: Binge-learning (fines de semana) y busca tutoriales gratis."
+            }
+        };
+
+        function switchEmpathy(key) {
+            // UI Update
+            document.querySelectorAll('.nav-pill').forEach(el => {
+                el.classList.remove('active', 'text-black');
+                el.classList.add('text-gray-500');
+            });
+            const activeBtn = document.getElementById(`tab-${key}`);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-gray-500');
+
+            // Content Update
+            const contentDiv = document.getElementById('empathy-content');
+            contentDiv.innerHTML = `
+                <h4 class="text-2xl text-white font-bold mb-4 animate-fade-in">${empathyData[key].title}</h4>
+                <p class="text-gray-300 text-lg animate-fade-in">${empathyData[key].content}</p>
+            `;
+        }
+
+        // --- 5. SMOOTH SCROLL ---
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
