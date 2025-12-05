@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platzi Bolivia: Análisis del "Messy Middle" 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gray: {
+                            850: '#1f2937',
+                            900: '#111827',
+                            950: '#030712',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #111827; color: #F3F4F6; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin: 0 auto; height: 350px; max-height: 400px; }
+        .card-dark { background-color: #1F2937; border: 1px solid #374151; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
+        .stage-btn { transition: all 0.2s; background-color: #1F2937; border: 1px solid #374151; color: #9CA3AF; }
+        .stage-btn:hover { background-color: #374151; color: white; }
+        .stage-btn.active { background-color: #10B981; color: white; border-color: #10B981; }
+        .stage-btn.active:hover { background-color: #059669; }
+        
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar for Dark Mode */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #111827; }
+        ::-webkit-scrollbar-thumb { background: #4B5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6B7280; }
+    </style>
+    <!-- Chosen Palette: "Dark Survival Mode" - Backgrounds (#111827), Cards (#1F2937), Text (#F3F4F6). 
+         Accents remain Green (#10B981) and Red (#EF4444) but adjusted for contrast against dark backgrounds. 
+         This aesthetic resonates with the "Dark Mode" preference of the developer tribe mentioned in the report. -->
+    
+    <!-- Application Structure Plan: 
+         1. Executive Dashboard: High-level summary of the "Survival Cycle" vs "Academic Aspiration".
+         2. Interactive Journey Map: The core navigation. Users click through 5 stages (Trigger -> Validation). 
+            - Logic: Updates the main content block and highlighting points on the Emotional Curve Chart.
+         3. The Messy Middle "Gap Analysis": Focus on the Exploration phase. 
+            - Interactive toggle to reveal "What User Asks" vs "What Brand Says".
+         4. The Payment Bottleneck (The Filter): Dedicated data view for the critical failure point (Stage 3).
+         5. Strategic Recommendations: Summary of the "Survival Gateway" solution.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Emotional Seismograph (Line Chart): 
+            - Goal: Show the volatility of user sentiment. 
+            - Method: Chart.js Line chart with LIGHT grid lines for dark mode.
+            - Interaction: Updates highlight point based on selected stage.
+         2. The Drop-off Funnel (Bar Chart):
+            - Goal: Visualize the impact of the "Currency Filter".
+            - Method: Chart.js Bar chart comparing "Intent" vs "Success".
+         3. Gap Analysis Cards (HTML/JS):
+            - Goal: Show the communication disconnect.
+            - Method: Interactive DOM manipulation to toggle answers.
+         
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All icons are unicode or CSS shapes.
+    -->
+</head>
+<body class="bg-gray-900 min-h-screen text-gray-100">
+
+    <!-- HEADER -->
+    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Platzi Bolivia <span class="text-green-400">2025</span></h1>
+                <p class="text-sm text-gray-400">AUDITORÍA FORENSE: EL JOURNEY MAP ACTUAL</p>
+            </div>
+            <div class="hidden md:block text-right">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Tribu Objetivo</p>
+                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-900/30 text-green-400 border border-green-800">
+                    Los Antigodínez Tech
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- INTRO: CONTEXTO 2025 -->
+        <section class="card-dark rounded-xl p-6 md:p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div class="md:col-span-2">
+                    <h2 class="text-xl font-bold text-white mb-4">Del Crecimiento a la Supervivencia</h2>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        En el contexto económico de Bolivia 2025, el usuario ya no busca "títulos" para colgar en la pared. Busca un <strong class="text-white">Seguro de Vida Laboral</strong>. 
+                        El viaje del cliente ha mutado: de una aspiración académica lineal a una <span class="text-red-400 font-semibold">carrera de obstáculos</span> por la supervivencia financiera y el acceso a dólares.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mt-4">
+                        <div class="flex items-center px-3 py-1 bg-gray-700 rounded text-sm text-gray-200 border border-gray-600">
+                            <span class="text-lg mr-2">📉</span> Escasez de Divisas
+                        </div>
+                        <div class="flex items-center px-3 py-1 bg-gray-700 rounded text-sm text-gray-200 border border-gray-600">
+                            <span class="text-lg mr-2">🤖</span> Miedo a la IA
+                        </div>
+                        <div class="flex items-center px-3 py-1 bg-gray-700 rounded text-sm text-gray-200 border border-gray-600">
+                            <span class="text-lg mr-2">📱</span> Mobile-First Extremo
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-green-900/20 p-6 rounded-lg border border-green-800/50">
+                    <h3 class="text-green-400 font-bold mb-2">Insight Clave</h3>
+                    <p class="text-green-200/80 text-sm italic">
+                        "El mayor punto de fuga no es la calidad del contenido, es la inviabilidad transaccional. El cliente quiere comprar, pero el sistema bancario no lo deja."
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-green-800/50">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-green-500 font-semibold uppercase">Estado Actual</span>
+                            <span class="text-red-400 font-bold text-sm flex items-center">Fricción Alta <span class="ml-1 text-xs">🔴</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE JOURNEY MAP -->
+        <section id="journey-section">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-white">El Mapa del Viaje (Real)</h2>
+                <p class="text-gray-400 mt-1">Navega por las 5 etapas del ciclo para ver la curva emocional y los puntos de dolor.</p>
+            </div>
+
+            <!-- Stage Navigation -->
+            <div class="flex flex-col md:flex-row justify-between gap-2 mb-8 overflow-x-auto pb-2">
+                <button onclick="updateJourney(0)" class="stage-btn active px-4 py-3 rounded-lg font-semibold text-sm whitespace-nowrap flex-1 text-center" id="btn-0">
+                    1. Disparador (Ansiedad)
+                </button>
+                <button onclick="updateJourney(1)" class="stage-btn px-4 py-3 rounded-lg font-semibold text-sm whitespace-nowrap flex-1 text-center" id="btn-1">
+                    2. Exploración (Cínica)
+                </button>
+                <button onclick="updateJourney(2)" class="stage-btn px-4 py-3 rounded-lg font-semibold text-sm border-red-900/50 text-red-400 hover:bg-red-900/20 whitespace-nowrap flex-1 text-center" id="btn-2">
+                    3. El Filtro (🚨 PAGO)
+                </button>
+                <button onclick="updateJourney(3)" class="stage-btn px-4 py-3 rounded-lg font-semibold text-sm whitespace-nowrap flex-1 text-center" id="btn-3">
+                    4. Consumo (Táctico)
+                </button>
+                <button onclick="updateJourney(4)" class="stage-btn px-4 py-3 rounded-lg font-semibold text-sm whitespace-nowrap flex-1 text-center" id="btn-4">
+                    5. Validación (Estatus)
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Content Panel -->
+                <div class="lg:col-span-5 card-dark rounded-xl p-6 flex flex-col justify-between h-full animate-fade-in" id="stage-content">
+                    <!-- Dynamic Content Injected Here via JS -->
+                </div>
+
+                <!-- Emotional Chart Panel -->
+                <div class="lg:col-span-7 card-dark rounded-xl p-6">
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-4">Sismógrafo Emocional</h3>
+                    <div class="chart-container">
+                        <canvas id="emotionalChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center text-xs text-gray-500">
+                        La curva muestra la volatilidad del sentimiento del usuario a lo largo del proceso.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE MESSY MIDDLE ANALYSIS -->
+        <section class="bg-indigo-900/10 rounded-xl p-8 border border-indigo-900/30">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold text-white">Análisis del "Messy Middle"</h2>
+                <p class="text-gray-400 mt-2 max-w-2xl mx-auto">
+                    Entre la exploración y la evaluación, el usuario está bombardeado por dudas existenciales. La marca está fallando en responder las preguntas críticas que bloquean la decisión.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Where they explore -->
+                <div class="card-dark p-6 rounded-lg">
+                    <h3 class="font-bold text-lg mb-4 flex items-center text-white">
+                        <span class="bg-indigo-900/50 text-indigo-300 p-2 rounded-full mr-3 text-sm border border-indigo-700">🔎</span>
+                        Fuentes de Verdad
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">📱</span>
+                            <div>
+                                <strong class="block text-gray-200">TikTok / Reels (2:00 AM)</strong>
+                                <span class="text-sm text-gray-400">Descubrimiento impulsivo basado en el miedo a la obsolescencia.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">👨‍💻</span>
+                            <div>
+                                <strong class="block text-gray-200">Validadores Técnicos (@midudev)</strong>
+                                <span class="text-sm text-gray-400">Buscan confirmación externa: "¿Esta tecnología sigue vigente o es vieja?"</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-xl mr-3">🕵️</span>
+                            <div>
+                                <strong class="block text-gray-200">Mercado Gris (Telegram)</strong>
+                                <span class="text-sm text-gray-400">Búsqueda de "Planes Familiares" para dividir costos y evadir límites bancarios.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- The Gap Analysis (Interactive) -->
+                <div class="card-dark p-6 rounded-lg">
+                    <h3 class="font-bold text-lg mb-4 flex items-center text-white">
+                        <span class="bg-red-900/30 text-red-400 p-2 rounded-full mr-3 text-sm border border-red-800">⚠️</span>
+                        Gap de Comunicación
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-4">Haz clic en las preguntas para ver la respuesta actual de la marca.</p>
+                    
+                    <div class="space-y-3">
+                        <!-- Q1 -->
+                        <div class="border border-gray-700 rounded-lg overflow-hidden">
+                            <button onclick="toggleFaq('faq1')" class="w-full text-left px-4 py-3 bg-gray-800 hover:bg-gray-700 flex justify-between items-center font-medium text-sm text-gray-200 transition">
+                                "¿Puedo pagar en Bolivianos/QR sin usar dólares?"
+                                <span class="text-gray-500">▼</span>
+                            </button>
+                            <div id="faq1" class="hidden px-4 py-3 bg-red-900/20 border-t border-red-900/30">
+                                <p class="text-red-400 text-sm font-bold mb-1">Respuesta Actual: AMBIGUA</p>
+                                <p class="text-gray-300 text-sm">La web muestra precios totales en bolivianos, pero la pasarela final cobra en dolares y choca con los límites bancarios. <span class="font-bold text-red-500">Estado: CRÍTICO 🔴</span></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q2 -->
+                        <div class="border border-gray-700 rounded-lg overflow-hidden">
+                            <button onclick="toggleFaq('faq2')" class="w-full text-left px-4 py-3 bg-gray-800 hover:bg-gray-700 flex justify-between items-center font-medium text-sm text-gray-200 transition">
+                                "¿Este curso enseña la versión de HOY (ej. Next.js 14)?"
+                                <span class="text-gray-500">▼</span>
+                            </button>
+                            <div id="faq2" class="hidden px-4 py-3 bg-yellow-900/20 border-t border-yellow-900/30">
+                                <p class="text-yellow-500 text-sm font-bold mb-1">Respuesta Actual: GENÉRICA</p>
+                                <p class="text-gray-300 text-sm">Dice "Aprende Teconología" pero falta la fecha de actualización visible. Genera desconfianza. <span class="font-bold text-yellow-500">Estado: ALERTA 🟡</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="border border-gray-700 rounded-lg overflow-hidden">
+                            <button onclick="toggleFaq('faq3')" class="w-full text-left px-4 py-3 bg-gray-800 hover:bg-gray-700 flex justify-between items-center font-medium text-sm text-gray-200 transition">
+                                "¿Si mi pago falla, alguien me va a ayudar?"
+                                <span class="text-gray-500">▼</span>
+                            </button>
+                            <div id="faq3" class="hidden px-4 py-3 bg-red-900/20 border-t border-red-900/30">
+                                <p class="text-red-400 text-sm font-bold mb-1">Respuesta Actual: AUTOMATIZADA</p>
+                                <p class="text-gray-300 text-sm">Chatbot con respuestas genéricas. El usuario se siente abandonado con su dinero perdido en la nube. <span class="font-bold text-red-500">Estado: CRÍTICO 🔴</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE CURRENCY FILTER (DATA VIEW) -->
+        <section class="card-dark rounded-xl p-6 md:p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <h2 class="text-xl font-bold text-white mb-2">El "Filtro Divisa"</h2>
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-6">Pérdida en la Pasarela de Pago</h3>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Aunque el deseo de compra es alto, la conversión cae drásticamente en el checkout debido al rechazo de tarjetas locales y límites de $50 USD.
+                    </p>
+                    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                        <span class="block text-xs text-gray-500 uppercase mb-1">Tasa de Fallo Estimada</span>
+                        <span class="text-3xl font-bold text-white">65%</span>
+                        <span class="text-sm text-red-400 font-medium ml-2">❌ Rechazo Bancario</span>
+                    </div>
+                    <div class="mt-6">
+                        <button onclick="toggleScenario()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm border border-blue-500 shadow-lg shadow-blue-900/50">
+                            Simular Solución (QR Nativo)
+                        </button>
+                        <p class="text-xs text-gray-500 mt-2 text-center">Clic para ver proyección de impacto</p>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 flex items-center justify-center bg-gray-900/50 rounded-lg p-4 border border-gray-700">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="funnelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECOMMENDATIONS -->
+        <section class="bg-green-900 rounded-xl shadow-lg shadow-green-900/20 p-8 text-white text-center md:text-left border border-green-800">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="md:w-2/3">
+                    <h2 class="text-2xl font-bold mb-2 text-white">La Solución: Pasarela de Supervivencia</h2>
+                    <p class="text-green-100/90 mb-6 md:mb-0">
+                        Para sobrevivir en 2025, Platzi Bolivia debe implementar una infraestructura de pago localizada que elimine la fricción del dólar.
+                    </p>
+                </div>
+                <div class="md:w-1/3 flex flex-col space-y-3">
+                    <div class="bg-green-950/50 px-4 py-3 rounded-lg border border-green-700 flex items-center">
+                        <span class="text-2xl mr-3">📲</span>
+                        <span class="font-bold text-sm text-green-100">QR Simple Nativo</span>
+                    </div>
+                    <div class="bg-green-950/50 px-4 py-3 rounded-lg border border-green-700 flex items-center">
+                        <span class="text-2xl mr-3">🇧🇴</span>
+                        <span class="font-bold text-sm text-green-100">Precio y Cobro Final en Bs.</span>
+                    </div>
+                    <div class="bg-green-950/50 px-4 py-3 rounded-lg border border-green-700 flex items-center">
+                        <span class="text-2xl mr-3">🤝</span>
+                        <span class="font-bold text-sm text-green-100">Soporte Humano Visible</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 border-t border-gray-700 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>© 2025 Análisis para implementar Platzi Bolvia. Comportamiento del Consumidor. Emilia Gamarra y Vianca Camacho</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA STORAGE ---
+        const journeyData = [
+            {
+                title: "1. El Disparador (Trigger)",
+                icon: "😟",
+                sentiment: "Ansiedad / Miedo",
+                description: "Noticias sobre devaluación o videos de IA reemplazando devs. La mentalidad es: 'Me voy a quedar obsoleto y pobre'.",
+                quote: "\"Necesito ganar en dólares para no depender de la economía local.\"",
+                chartIndex: 0
+            },
+            {
+                title: "2. Investigación Cínica",
+                icon: "😐",
+                sentiment: "Escepticismo",
+                description: "No confían en la publicidad. Buscan validación en terceros (@midudev, Reddit) para ver si es 'vende-humo'.",
+                quote: "\"¿Es esto real o solo marketing? ¿Vale la pena el esfuerzo?\"",
+                chartIndex: 1
+            },
+            {
+                title: "3. El Filtro Divisa (CRÍTICO)",
+                icon: "😡",
+                sentiment: "Frustración Extrema",
+                description: "El momento de la verdad se rompe. Tarjetas rechazadas, miedo al tipo de cambio y soporte fantasma.",
+                quote: "\"Tengo el dinero en Bolivianos, ¿por qué no me dejan pagar?\"",
+                chartIndex: 2
+            },
+            {
+                title: "4. Consumo Táctico",
+                icon: "😌",
+                sentiment: "Alivio / Control",
+                description: "Consumo acelerado (1.5x) y offline para ahorrar datos. Buscan la habilidad específica YA.",
+                quote: "\"Descargo la clase con el WiFi del trabajo para verla en el bus.\"",
+                chartIndex: 3
+            },
+            {
+                title: "5. Validación (Status)",
+                icon: "😎🤓",
+                sentiment: "Orgullo / Logro",
+                description: "Publicación del certificado en LinkedIn. La 'insignia verde' valida su aptitud global.",
+                quote: "\"Miren, ya soy apto para trabajar en remoto.\"",
+                chartIndex: 4
+            }
+        ];
+
+        // --- CHART CONFIGURATION ---
+        // Global Dark Mode Defaults for Chart.js
+        Chart.defaults.color = '#9CA3AF';
+        Chart.defaults.borderColor = '#374151';
+
+        let emotionalChart;
+        let funnelChart;
+
+        function initCharts() {
+            // 1. Emotional Seismograph (Line Chart)
+            const ctxEmotional = document.getElementById('emotionalChart').getContext('2d');
+            emotionalChart = new Chart(ctxEmotional, {
+                type: 'line',
+                data: {
+                    labels: ['Trigger', 'Exploración', 'PAGO (Filtro)', 'Consumo', 'Validación'],
+                    datasets: [{
+                        label: 'Nivel de Satisfacción Emocional',
+                        data: [2, 4, -5, 6, 8], // Representing the emotional curve
+                        borderColor: '#10B981', // Green
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointBackgroundColor: ['#6B7280', '#6B7280', '#EF4444', '#10B981', '#10B981'], 
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            titleColor: '#F3F4F6',
+                            bodyColor: '#D1D5DB',
+                            borderColor: '#374151',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const labels = ["Ansiedad", "Escepticismo", "Frustración", "Alivio", "Orgullo"];
+                                    return labels[context.dataIndex];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: -6,
+                            max: 10,
+                            display: false
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // 2. Funnel Chart (Bar Chart)
+            const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+            funnelChart = new Chart(ctxFunnel, {
+                type: 'bar',
+                data: {
+                    labels: ['Intención de Compra', 'Intento de Pago', 'Pago Exitoso'],
+                    datasets: [{
+                        label: 'Usuarios (Escenario Actual)',
+                        data: [1000, 950, 350], 
+                        backgroundColor: ['#4B5563', '#4B5563', '#EF4444'], // Darker grays and Red for dropoff
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Horizontal bars
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#D1D5DB' } },
+                        title: { display: true, text: 'Embudo de Conversión: Impacto del Banco', color: '#F3F4F6' },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            borderColor: '#374151',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, max: 1200, grid: { color: '#374151' } },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // --- INTERACTION LOGIC ---
+
+        // Stage Selection
+        function updateJourney(index) {
+            const data = journeyData[index];
+            const contentDiv = document.getElementById('stage-content');
+            
+            // Update UI Buttons
+            document.querySelectorAll('.stage-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('active');
+                    btn.classList.remove('border-red-900/50', 'text-red-400');
+                } else {
+                    btn.classList.remove('active');
+                    // Reset specialized colors for button 3 (Index 2)
+                    if(i === 2) { 
+                        btn.classList.add('text-red-400', 'border-red-900/50');
+                    } else {
+                        btn.classList.remove('text-red-400', 'border-red-900/50');
+                    }
+                }
+            });
+
+            // Inject Content with Animation reset
+            contentDiv.classList.remove('animate-fade-in');
+            void contentDiv.offsetWidth; // trigger reflow
+            contentDiv.classList.add('animate-fade-in');
+
+            // Logic for coloring internal elements of the stage card
+            let badgeClass = index === 2 ? 'bg-red-900/40 text-red-300 border border-red-800' : 'bg-gray-700 text-gray-300 border border-gray-600';
+            let quoteBorder = index === 2 ? 'border-red-500' : 'border-green-500';
+
+            contentDiv.innerHTML = `
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-4xl">${data.icon}</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${badgeClass}">Etapa ${index + 1}</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">${data.title}</h3>
+                    <p class="text-sm font-semibold text-gray-400 uppercase mb-4">Estado Emocional: <span class="${index === 2 ? 'text-red-400' : 'text-gray-200'}">${data.sentiment}</span></p>
+                    <p class="text-gray-300 leading-relaxed mb-6">${data.description}</p>
+                </div>
+                <div class="border-l-4 ${quoteBorder} pl-4 italic text-gray-400 bg-gray-800/50 py-3 pr-2 rounded-r border-t border-r border-b border-gray-700/50">
+                    ${data.quote}
+                </div>
+            `;
+
+            // Update Chart Highlight
+            // Colors suitable for dark mode
+            const pointColors = ['#6B7280', '#6B7280', '#EF4444', '#10B981', '#10B981'];
+            const pointRadii = [6, 6, 6, 6, 6];
+            
+            // Highlight selected
+            pointColors[index] = index === 2 ? '#EF4444' : '#10B981'; // Bright red or green
+            pointRadii[index] = 12; // Bigger radius
+
+            emotionalChart.data.datasets[0].pointBackgroundColor = pointColors;
+            emotionalChart.data.datasets[0].pointRadius = pointRadii;
+            emotionalChart.update();
+        }
+
+        // FAQ Toggle
+        function toggleFaq(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // Scenario Toggle (Current vs Solved)
+        let isSolvedScenario = false;
+        function toggleScenario() {
+            isSolvedScenario = !isSolvedScenario;
+            
+            if (isSolvedScenario) {
+                // Show Solved Data
+                funnelChart.data.datasets[0].label = 'Proyección con QR Simple';
+                funnelChart.data.datasets[0].data = [1000, 980, 850]; // Much better retention
+                funnelChart.data.datasets[0].backgroundColor = ['#4B5563', '#4B5563', '#10B981']; // Green success
+            } else {
+                // Revert to Current Data
+                funnelChart.data.datasets[0].label = 'Usuarios (Escenario Actual)';
+                funnelChart.data.datasets[0].data = [1000, 950, 350];
+                funnelChart.data.datasets[0].backgroundColor = ['#4B5563', '#4B5563', '#EF4444']; // Red failure
+            }
+            funnelChart.update();
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            updateJourney(0); // Load first stage
+        });
+
+    </script>
+</body>
+</html>
