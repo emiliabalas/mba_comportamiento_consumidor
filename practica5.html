@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría: Cazadores de Fricción Digital - Platzi Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            850: '#1f2937',
+                            900: '#111827',
+                            950: '#030712',
+                        },
+                        tech: {
+                            green: '#00F0FF', // Cyberpunk neon cyan/green variant
+                            red: '#FF003C',   // Cyberpunk neon red
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #F3F4F6; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Neon Glow Effects */
+        .neon-border-green { box-shadow: 0 0 5px #10B981, 0 0 10px #10B981 inset; border-color: #10B981; }
+        .neon-border-red { box-shadow: 0 0 5px #EF4444, 0 0 10px #EF4444 inset; border-color: #EF4444; }
+        .neon-text { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        
+        .card-dark { background-color: #111827; border: 1px solid #374151; }
+        .card-interactive { transition: all 0.3s ease; cursor: pointer; }
+        .card-interactive:hover { transform: translateY(-2px); border-color: #6B7280; }
+        
+        .friction-badge { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+        
+        .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        
+        /* Chart Container */
+        .chart-container { position: relative; width: 100%; height: 300px; }
+    </style>
+    
+    <!-- Chosen Palette: "Cyberpunk Audit" 
+         - Background: Deep Black/Gray (#030712) representing the console/backend.
+         - Success: Neon Green (#10B981) for passed tests.
+         - Critical: Neon Red (#EF4444) for friction points.
+         - Text: High contrast white/gray.
+         - Font: JetBrains Mono for data/headings to emphasize the "Developer/Tech" context.
+    -->
+
+    <!-- Application Structure Plan:
+         1. Header: Workshop Identity ("Taller 5").
+         2. Executive Status Bar: Immediate visual summary (Frontend = OK, Business Logic = FAIL).
+         3. The "Passed" Zone: Briefly acknowledging the 5-Sec Test and Mobile Audit success.
+         4. Friction Safari Grid (The Core): 3 Interactive cards representing the 3 found frictions.
+            - Interaction: User clicks "Analyze" to flip/expand the card and reveal the "Quick Win".
+         5. Solution Matrix & Impact: A summary table and a chart simulating revenue recovery.
+         
+         Rationale: This structure follows the workshop flow: Verify what works -> Deep dive into what doesn't -> Propose solutions.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Status Indicators (Unicode/CSS): Green Checks vs Red Alerts. Simple, instant communication.
+         2. Flip Cards (JS/CSS): Used for the "Friction Safari". 
+            - Goal: Force the user to acknowledge the problem before seeing the solution.
+            - Content: "Problem" (Front) -> "Quick Win" (Back).
+         3. Recovery Chart (Chart.js): 
+            - Goal: Visualize the value of the "Quick Wins".
+            - Type: Stacked Bar or Comparison Bar showing "Current Loss" vs "Recovered Sales".
+    -->
+    
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-gray-950 min-h-screen text-gray-100 selection:bg-green-900 selection:text-green-100">
+
+    <!-- HEADER -->
+    <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">🕵️‍♂️</span>
+                <div>
+                    <h1 class="text-xl font-bold font-mono tracking-tight text-white uppercase">Cazadores de Fricción <span class="text-green-500">v.5.0</span></h1>
+                    <div class="flex flex-col">
+                        <p class="text-xs text-gray-500 font-mono">Auditoría Digital: Platzi Bolivia</p>
+                        <p class="text-xs text-gray-400 font-mono mt-0.5 border-l-2 border-green-500 pl-2">Analistas: Vianca Camacho Rios, Emilia Gamarra Balas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-gray-800 rounded border border-gray-700">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-xs font-mono text-gray-300">SYSTEM: ONLINE</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- INTRO & DIAGNOSTIC SUMMARY -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <h2 class="text-2xl font-bold text-white mb-3">Diagnóstico General</h2>
+                <p class="text-gray-400 mb-6 leading-relaxed">
+                    Tras auditar los canales digitales, la conclusión es clara: <strong class="text-white">Platzi Bolivia tiene un "Frontend (La cara de la web)" impecable pero un "Backend de Negocio en el Módulo Transaccional (Cerebro del negocio) " bloqueado.</strong>
+                    El usuario pasa las pruebas de identidad y usabilidad móvil, pero choca frontalmente con barreras de pago nacionales y soporte al instante.
+                </p>
+                
+                <!-- PASSED TESTS INDICATORS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-gray-900/50 border border-green-900/30 p-4 rounded-lg flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-green-900/20 flex items-center justify-center text-green-500 text-xl border border-green-800">✓</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-green-400">Test de 5 Segundos</h4>
+                            <p class="text-xs text-gray-500">Propuesta de valor clara.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900/50 border border-green-900/30 p-4 rounded-lg flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-green-900/20 flex items-center justify-center text-green-500 text-xl border border-green-800">✓</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-green-400">Auditoría Móvil</h4>
+                            <p class="text-xs text-gray-500">UX optimizado (Thumb Zone).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CRITICAL ALERT BOX -->
+            <div class="card-dark p-6 rounded-xl border-l-4 border-l-red-500 flex flex-col justify-center bg-red-900/5">
+                <h3 class="text-red-500 font-mono font-bold text-lg mb-2">⚠️ ALERTA CRÍTICA</h3>
+                <p class="text-sm text-gray-300 mb-4">
+                    Se han detectado <span class="text-white font-bold">3 Fricciones Graves</span> en el "Messy Middle" que están matando la conversión.
+                </p>
+                <div class="text-xs font-mono text-red-400 mt-auto">
+                    IMPACTO: 65% Abandono de Carrito
+                </div>
+            </div>
+        </section>
+
+        <!-- FRICTION SAFARI (INTERACTIVE CARDS) -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <span class="text-2xl">🦁</span> Safari de Fricción
+                </h2>
+                <span class="text-xs text-gray-500 font-mono hidden sm:block">Clic en las tarjetas para ver soluciones</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- CARD 1: TECHNICAL -->
+                <div class="card-dark rounded-xl overflow-hidden flex flex-col h-full card-interactive group" onclick="toggleSolution('tech-card')">
+                    <div class="p-1 bg-red-500/20"></div> <!-- Color Bar -->
+                    <div class="p-6 flex-1 flex flex-col relative">
+                        <!-- FRONT -->
+                        <div id="tech-card-front" class="transition-opacity duration-300">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="friction-badge bg-red-900/30 text-red-400 border border-red-800">TÉCNICA</span>
+                                <span class="text-2xl">💳</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">El Muro de Pago</h3>
+                            <p class="text-sm text-gray-400 mb-4">
+                                El usuario quiere pagar, pero el banco rechaza la tarjeta por límites de divisas ($50-$100 USD) o bloqueos internacionales.
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-gray-800">
+                                <button class="w-full py-2 bg-gray-800 hover:bg-gray-700 rounded text-xs font-mono text-red-400 border border-red-900/30 transition-colors">
+                                    VER QUICK WIN >
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- BACK (Hidden by default) -->
+                        <div id="tech-card-back" class="hidden absolute inset-0 bg-gray-900 p-6 flex-col h-full z-10 transition-opacity duration-300 animate-fade-in">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="friction-badge bg-green-900/30 text-green-400 border border-green-800">SOLUCIÓN</span>
+                                <button class="text-gray-500 hover:text-white text-xs">✕</button>
+                            </div>
+                            <h3 class="text-md font-bold text-white mb-2">QR Simple "Manual"</h3>
+                            <p class="text-xs text-gray-300 mb-4 flex-1">
+                                Integrar temporalmente un canal de WhatsApp Business que envíe un QR de cobro nacional y active cuentas manualmente.
+                            </p>
+                            <div class="bg-green-900/10 p-2 rounded border border-green-900/30 text-center">
+                                <span class="text-xs font-mono text-green-400">Recupera ventas rebotadas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2: EMOTIONAL -->
+                <div class="card-dark rounded-xl overflow-hidden flex flex-col h-full card-interactive group" onclick="toggleSolution('emo-card')">
+                    <div class="p-1 bg-yellow-500/20"></div> <!-- Color Bar -->
+                    <div class="p-6 flex-1 flex flex-col relative">
+                        <!-- FRONT -->
+                        <div id="emo-card-front" class="transition-opacity duration-300">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="friction-badge bg-yellow-900/30 text-yellow-400 border border-yellow-800">EMOCIONAL</span>
+                                <span class="text-2xl">👻</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">Soporte "Ghosting"</h3>
+                            <p class="text-sm text-gray-400 mb-4">
+                                Ansiedad pura. Ante un error de cobro, solo responde un bot. El usuario siente que "le robaron" y nadie contesta.
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-gray-800">
+                                <button class="w-full py-2 bg-gray-800 hover:bg-gray-700 rounded text-xs font-mono text-yellow-400 border border-yellow-900/30 transition-colors">
+                                    VER QUICK WIN >
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- BACK -->
+                        <div id="emo-card-back" class="hidden absolute inset-0 bg-gray-900 p-6 flex-col h-full z-10 transition-opacity duration-300 animate-fade-in">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="friction-badge bg-green-900/30 text-green-400 border border-green-800">SOLUCIÓN</span>
+                                <button class="text-gray-500 hover:text-white text-xs">✕</button>
+                            </div>
+                            <h3 class="text-md font-bold text-white mb-2">Link "Humano no Godín" en Bio</h3>
+                            <p class="text-xs text-gray-300 mb-4 flex-1">
+                                Botón directo en Instagram/TikTok/Web: "Habla con un Humano (Problemas de Pago)". Cero bots, Cero Godinez.
+                            </p>
+                            <div class="bg-green-900/10 p-2 rounded border border-green-900/30 text-center">
+                                <span class="text-xs font-mono text-green-400">Reduce ansiedad y funas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: COGNITIVE -->
+                <div class="card-dark rounded-xl overflow-hidden flex flex-col h-full card-interactive group" onclick="toggleSolution('cog-card')">
+                    <div class="p-1 bg-blue-500/20"></div> <!-- Color Bar -->
+                    <div class="p-6 flex-1 flex flex-col relative">
+                        <!-- FRONT -->
+                        <div id="cog-card-front" class="transition-opacity duration-300">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="friction-badge bg-blue-900/30 text-blue-400 border border-blue-800">COGNITIVA</span>
+                                <span class="text-2xl">🧠</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">Duda de Vigencia</h3>
+                            <p class="text-sm text-gray-400 mb-4">
+                                "¿Esto es viejo?" El usuario no ve la fecha de actualización y sale a YouTube o LinkedIn a verificar si la tecnología sigue viva y sigue siendo un requerimiento en el mundo laboral (competitividad 🤠).
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-gray-800">
+                                <button class="w-full py-2 bg-gray-800 hover:bg-gray-700 rounded text-xs font-mono text-blue-400 border border-blue-900/30 transition-colors">
+                                    VER QUICK WIN >
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- BACK -->
+                        <div id="cog-card-back" class="hidden absolute inset-0 bg-gray-900 p-6 flex-col h-full z-10 transition-opacity duration-300 animate-fade-in">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="friction-badge bg-green-900/30 text-green-400 border border-green-800">SOLUCIÓN</span>
+                                <button class="text-gray-500 hover:text-white text-xs">✕</button>
+                            </div>
+                            <h3 class="text-md font-bold text-white mb-2">Badge de Versión</h3>
+                            <p class="text-xs text-gray-300 mb-4 flex-1">
+                                Etiqueta visual en miniaturas: "Actualizado: Dic 2025" o "v.14.0". Certeza inmediata.
+                            </p>
+                            <div class="bg-green-900/10 p-2 rounded border border-green-900/30 text-center">
+                                <span class="text-xs font-mono text-green-400">Mantiene al usuario en web</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- IMPACT SIMULATOR -->
+        <section class="card-dark rounded-xl p-6 md:p-8 border border-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-1">
+                    <h2 class="text-xl font-bold text-white mb-2">Matriz de Impacto</h2>
+                    <p class="text-sm text-gray-400 mb-6">
+                        Proyección estimada de recuperación de ventas implementando los "Quick Wins", especialmente el QR Manual.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-3 rounded border border-gray-800">
+                            <div class="text-xs text-gray-500 mb-1">Escenario Actual</div>
+                            <div class="flex justify-between items-end">
+                                <span class="text-xl font-bold text-red-400">35% Conversión</span>
+                                <span class="text-xs text-red-500">❌ Alta Fricción</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 p-3 rounded border border-green-900/50 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-green-500/5"></div>
+                            <div class="text-xs text-gray-400 mb-1 relative z-10">Con Quick Wins</div>
+                            <div class="flex justify-between items-end relative z-10">
+                                <span class="text-xl font-bold text-green-400">85% Conversión</span>
+                                <span class="text-xs text-green-500">🚀 +50% Recuperado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 border-t border-gray-800 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm font-mono">
+                GENERADO POR: <span class="text-green-500">VIANCA & EMILIA</span> // TALLER 5 // COMPORTAMIENTO DEL CONSUMIDOR
+            </p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- FLIP CARD LOGIC ---
+        function toggleSolution(cardId) {
+            const front = document.getElementById(cardId + '-front');
+            const back = document.getElementById(cardId + '-back');
+            
+            if (back.classList.contains('hidden')) {
+                // Show Back (Solution)
+                back.classList.remove('hidden');
+                back.classList.add('flex');
+                // front.classList.add('opacity-0'); // Optional fading
+            } else {
+                // Show Front (Problem)
+                back.classList.add('hidden');
+                back.classList.remove('flex');
+                // front.classList.remove('opacity-0');
+            }
+        }
+
+        // --- CHART LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chart.js Default Dark Mode Settings
+            Chart.defaults.color = '#9CA3AF';
+            Chart.defaults.borderColor = '#374151';
+            Chart.defaults.font.family = '"Inter", sans-serif';
+
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Checkout Intent', 'Pago Exitoso'],
+                    datasets: [
+                        {
+                            label: 'Pérdida por Fricción (Actual)',
+                            data: [100, 35], // High drop off
+                            backgroundColor: '#EF4444', // Red
+                            barPercentage: 0.6
+                        },
+                        {
+                            label: 'Recuperación con Quick Wins',
+                            data: [0, 50], // The recovered amount
+                            backgroundColor: '#10B981', // Green
+                            barPercentage: 0.6,
+                            stack: 'Stack 0' // Attempt to stack visualization logic if needed, or keep separate for clarity
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { 
+                            stacked: true,
+                            grid: { display: false }
+                        },
+                        y: { 
+                            stacked: true,
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) { return value + "%" }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top', align: 'end' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
