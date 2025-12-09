@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Investigación: El Vampiro Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Chosen Palette: Clinical Research - Clean Light Backgrounds with High Contrast Data Points -->
+    <!-- Primary Background: #f8fafc (Slate-50) -->
+    <!-- Surface: #ffffff (White) -->
+    <!-- Text: #1e293b (Slate-800) -->
+    <!-- Accents: #6366f1 (Indigo) for Data, #ef4444 (Red) for Pain Points/Rejection -->
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        
+        /* Custom Chart Container Styling as per requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .nav-active { border-bottom: 2px solid #6366f1; color: #4338ca; font-weight: 600; }
+        .hidden-section { display: none; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header Section -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between py-3 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 text-white p-2 rounded-lg font-bold self-start">L6</div>
+                    <div class="flex flex-col">
+                        <h1 class="text-xl font-bold text-gray-900 leading-tight">Entrevista con el Vampiro (Digital)</h1>
+                        <p class="text-xs text-gray-500">Módulo: Comportamiento del Consumidor | Sesión 6</p>
+                        <p class="text-[11px] text-indigo-600 font-medium mt-1">Enfoque: ¿Qué opina Luna de Platzi y la educación online?</p>
+                        <p class="text-[10px] text-gray-400">Analistas: Emilia Gamarra Balas - Vianca Camacho Rios</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-8 self-center">
+                    <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-active py-2 px-1 text-sm font-medium hover:text-indigo-600 transition">Perfil: Luna</button>
+                    <button onclick="navigate('analysis')" id="nav-analysis" class="py-2 px-1 text-sm font-medium hover:text-indigo-600 transition">Análisis Profundo</button>
+                    <button onclick="navigate('insight')" id="nav-insight" class="py-2 px-1 text-sm font-medium hover:text-indigo-600 transition">El Insight Clave</button>
+                    <button onclick="navigate('strategy')" id="nav-strategy" class="py-2 px-1 text-sm font-medium hover:text-indigo-600 transition">Estrategia</button>
+                    <button onclick="navigate('methodology')" id="nav-methodology" class="py-2 px-1 text-sm font-medium hover:text-indigo-600 transition">Metodología AI</button>
+                </nav>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                    <span class="text-2xl">☰</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Nav -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="navigate('dashboard')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Perfil</button>
+                <button onclick="navigate('analysis')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Análisis</button>
+                <button onclick="navigate('insight')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Insight</button>
+                <button onclick="navigate('strategy')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Estrategia</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Application Structure Plan:
+         1. Dashboard (Persona): Introduces "Luna" with concise psychographics. Sets the context.
+         2. Analysis: Breaks down the 3 key pillars (Product, Banking, Jobs) using interactive cards and charts to show the gap between offer and need.
+         3. Insight: A focused simulation of the "Promo" moment. Shows the math behind the rejection.
+         4. Strategy: Actionable takeaways for the brand.
+         5. Methodology: Transparent log of AI prompts used to generate the persona.
+    -->
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- SECTION 1: DASHBOARD / PERSONA PROFILE -->
+        <section id="dashboard" class="fade-in space-y-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="p-6 md:p-8 bg-gradient-to-r from-indigo-50 to-white">
+                    <div class="flex flex-col md:flex-row gap-6 items-start">
+                        <div class="flex-shrink-0">
+                            <div class="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center text-4xl shadow-inner border-4 border-white">
+                                👩‍💻
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                                <h2 class="text-3xl font-bold text-gray-900">Sujeto: LUNA</h2>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 mt-2 md:mt-0">
+                                    Arquetipo: Anti-Godínez
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4 max-w-3xl">
+                                Ingeniera de Sistemas, 30 años. Ubicada en <strong>Sucre, Bolivia (2025)</strong>. 
+                                Representa al segmento de talento técnico avanzado que busca escapar de la precariedad laboral local mediante la exportación de servicios.
+                            </p>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                                <div class="bg-white p-3 rounded-lg border border-gray-100 shadow-sm text-center">
+                                    <div class="text-xs text-gray-500 uppercase tracking-wide">Nivel Tech</div>
+                                    <div class="font-bold text-indigo-600 text-lg">Senior</div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-gray-100 shadow-sm text-center">
+                                    <div class="text-xs text-gray-500 uppercase tracking-wide">Meta Principal</div>
+                                    <div class="font-bold text-green-600 text-lg">Ingresos USD</div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-gray-100 shadow-sm text-center">
+                                    <div class="text-xs text-gray-500 uppercase tracking-wide">Tolerancia Riesgo</div>
+                                    <div class="font-bold text-orange-600 text-lg">Alta</div>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-gray-100 shadow-sm text-center">
+                                    <div class="text-xs text-gray-500 uppercase tracking-wide">Fricción Bancaria</div>
+                                    <div class="font-bold text-red-600 text-lg">Crítica</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization & Content Choices:
+                 Goal: Visualize the psychographic makeup.
+                 Viz: Radar Chart.
+                 Why: Shows the imbalance between her needs (Freedom, Tech Depth) and the traditional offers (Stability, Certificates).
+            -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Perfil Psicográfico</h3>
+                    <p class="text-sm text-gray-600 mb-4">Comparativa entre las prioridades del mercado local tradicional vs. las prioridades de Luna.</p>
+                    <div class="chart-container">
+                        <canvas id="psychographicChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">El Manifiesto de Luna</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-indigo-500">
+                            <h4 class="font-bold text-indigo-900 text-sm">Sobre el Trabajo</h4>
+                            <p class="text-sm text-gray-700 italic">"No estudié ingeniería para arreglar impresoras de 8 a 12. Quiero libertad y proyectos globales."</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-green-500">
+                            <h4 class="font-bold text-green-900 text-sm">Sobre el Dinero</h4>
+                            <p class="text-sm text-gray-700 italic">"Los bolivianos se devalúan. Mis habilidades se cobran en dólares o cripto."</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-red-500">
+                            <h4 class="font-bold text-red-900 text-sm">Sobre la Banca</h4>
+                            <p class="text-sm text-gray-700 italic">"El banco es mi enemigo. Cada comisión es un robo. Busco la ruta DeFi o Wise."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DEEP ANALYSIS -->
+        <section id="analysis" class="hidden-section fade-in space-y-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Análisis de Profundidad</h2>
+                <p class="text-gray-600 mt-2">
+                    Desglose de los tres pilares fundamentales que bloquean la conversión: la percepción del producto educativo, las barreras del entorno económico y la validación profesional.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Card 1: Product Perception -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col">
+                    <div class="p-5 border-b border-gray-100 bg-indigo-50 rounded-t-xl">
+                        <h3 class="font-bold text-indigo-900">1. Percepción del Producto</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <ul class="space-y-3 text-sm text-gray-700">
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-500 font-bold">✖</span>
+                                <span><strong>Generalista:</strong> "Un océano de conocimiento con 1cm de profundidad".</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-red-500 font-bold">✖</span>
+                                <span><strong>Lento:</strong> La tecnología avanza más rápido que la edición de video.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-600 font-bold">✔</span>
+                                <span><strong>Alternativa:</strong> Documentación oficial, Stack Overflow, YouTube (Gratis y al día).</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 2: Contextual Barriers -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col">
+                    <div class="p-5 border-b border-gray-100 bg-red-50 rounded-t-xl">
+                        <h3 class="font-bold text-red-900">2. Barreras Contextuales (Bolivia '25)</h3>
+                    </div>
+                    <div class="p-5 flex-grow">
+                        <div class="chart-container" style="height: 200px;">
+                            <canvas id="bankingFrictionChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-3 text-center">Pérdida de valor percibida en transacciones tradicionales.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Professional Validation -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col">
+                    <div class="p-5 border-b border-gray-100 bg-green-50 rounded-t-xl">
+                        <h3 class="font-bold text-green-900">3. Validación Profesional</h3>
+                    </div>
+                    <div class="p-5 flex-grow space-y-4">
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="block text-xs font-bold text-gray-500 uppercase">Lo que NO funciona</span>
+                            <span class="text-sm text-gray-800">Certificados digitales, Insignias, Diplomas ("Cartonitis").</span>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded border border-green-200">
+                            <span class="block text-xs font-bold text-green-700 uppercase">Lo que SÍ funciona</span>
+                            <span class="text-sm text-green-900">GitHub verde, Portafolio en vivo, Casos de estudio, "Show, don't tell".</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Habits Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Hábitos de Búsqueda de Empleo: El Método Francotirador</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3">Canal</th>
+                                <th class="px-6 py-3">Estrategia</th>
+                                <th class="px-6 py-3">Valoración</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium text-gray-900">LinkedIn</td>
+                                <td class="px-6 py-4">Perfil en Inglés + Contacto directo a CEOs/Recruiters (No "Easy Apply").</td>
+                                <td class="px-6 py-4 text-green-600 font-bold">Alta</td>
+                            </tr>
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium text-gray-900">Wellfound (AngelList)</td>
+                                <td class="px-6 py-4">Búsqueda de Startups con capital reciente y cultura remota.</td>
+                                <td class="px-6 py-4 text-green-600 font-bold">Muy Alta</td>
+                            </tr>
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium text-gray-900">Upwork</td>
+                                <td class="px-6 py-4">Filtros de tarifa alta (+$25/h) para flujo de caja rápido.</td>
+                                <td class="px-6 py-4 text-yellow-600 font-bold">Media (Mal necesario)</td>
+                            </tr>
+                            <tr class="bg-gray-50 border-b opacity-75">
+                                <td class="px-6 py-4 font-medium text-gray-900">Portales Locales</td>
+                                <td class="px-6 py-4">Ignorados totalmente.</td>
+                                <td class="px-6 py-4 text-red-600 font-bold">Nula</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: THE KEY INSIGHT (Interactive Simulation) -->
+        <section id="insight" class="hidden-section fade-in space-y-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">El Hallazgo Principal (Key Insight)</h2>
+                <p class="text-gray-600 mt-2">
+                    Análisis de la reacción ante la Promoción Navideña (Bs 1.439). ¿Por qué una oferta de descuento genera rechazo en lugar de compra?
+                </p>
+            </div>
+
+            <!-- Visualization & Content Choices:
+                 Goal: Demonstrate the "Cost of Opportunity" logic.
+                 Viz: Bar Chart comparing spending $200 on Courses vs Tools.
+                 Interaction: User toggles views to see the rationale.
+            -->
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- The Trigger -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">El Estímulo: La Oferta</h3>
+                    <div class="bg-gradient-to-r from-pink-500 to-red-500 text-white p-6 rounded-lg text-center shadow-md mb-6 relative overflow-hidden">
+                        <div class="relative z-10">
+                            <h4 class="text-2xl font-bold">¡Navidad Platzi!</h4>
+                            <div class="text-4xl font-extrabold my-2">Bs 1.439</div>
+                            <p class="text-sm opacity-90">Ahorras Bs 351 • 4 Cuotas sin interés</p>
+                            <div class="mt-4 bg-white text-red-600 py-2 px-4 rounded-full font-bold text-sm inline-block">
+                                + 1 Curso GRATIS cada día
+                            </div>
+                        </div>
+                        <!-- Decorative shapes -->
+                        <div class="absolute top-0 left-0 w-full h-full bg-white opacity-10 transform -skew-x-12"></div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-gray-800">La Reacción de Luna:</h4>
+                        <blockquote class="border-l-4 border-red-500 pl-4 italic text-gray-600 bg-gray-50 p-2 rounded-r">
+                            "Esa imagen me grita 'Desesperación por flujo de caja' de parte de ellos, no 'Oportunidad única' para mí."
+                        </blockquote>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">FOMO Negativo</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">Distracción</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">Trampa Financiera</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Logic -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">La Lógica: Ejecución vs. Consumo</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Para Luna, Bs 1.439 ($200 USD) es capital de trabajo. Compare el retorno de inversión percibido (ROI).
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="opportunityCostChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-sm font-medium text-gray-800">
+                            Conclusión: <span class="text-indigo-600 font-bold">Invertir en la pala (herramienta)</span> > Invertir en el mapa (curso).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: STRATEGY -->
+        <section id="strategy" class="hidden-section fade-in space-y-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Estrategia Recomendada</h2>
+                <p class="text-gray-600 mt-2">
+                    Basado en el problema de Product-Market Fit detectado, estas son las acciones sugeridas para captar al segmento Senior/Freelance.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold mb-2">1. Pivotar Promesa</h3>
+                    <p class="text-indigo-100 text-sm mb-4">De "Nunca pares de aprender" a <strong>"Habilitación de Ingresos"</strong>.</p>
+                    <p class="text-xs text-indigo-200 border-t border-indigo-500 pt-4">
+                        El usuario quiere saber cómo sus $200 se convertirán en $1000 el próximo mes.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition">
+                    <div class="text-4xl mb-4">🛠️</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">2. Oferta de Infraestructura</h3>
+                    <p class="text-gray-600 text-sm mb-4">Vender "Bundles" que incluyan herramientas reales, no solo videos.</p>
+                    <ul class="text-xs text-gray-500 space-y-2 list-disc pl-4">
+                        <li>Créditos AWS/Cloud</li>
+                        <li>Acceso a APIs premium</li>
+                        <li>Software SaaS incluido</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">3. Enfoque B2B/Laboral</h3>
+                    <p class="text-gray-600 text-sm mb-4">El certificado no vende; la conexión laboral sí.</p>
+                    <ul class="text-xs text-gray-500 space-y-2 list-disc pl-4">
+                        <li>Bolsa de trabajo verificada</li>
+                        <li>Mentorías de empleabilidad</li>
+                        <li>Rutas directas a contratación</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: METHODOLOGY (PROMPTS LOG) -->
+        <section id="methodology" class="hidden-section fade-in space-y-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Bitácora de Metodología AI</h2>
+                <p class="text-gray-600 mt-2">
+                    Registro de los prompts utilizados para generar y validar el arquetipo "Luna".
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                    <h3 class="font-bold text-gray-700">Secuencia de Prompts</h3>
+                    <input type="text" id="promptSearch" placeholder="Buscar en prompts..." class="text-sm border rounded px-3 py-1 focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm text-left text-gray-600" id="promptsTable">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 w-1/4">Fase</th>
+                                <th class="px-6 py-3 w-1/3">Prompt (Resumen)</th>
+                                <th class="px-6 py-3">Resultado Clave</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <!-- Rows populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p>Emilia Gamarra - IA Generativa • Sucre, Bolivia (2025)</p>
+            <p class="mt-2">Generado vía AI Generativa para fines académicos.</p>
+        </div>
+    </footer>
+
+    <!-- LOGIC SCRIPT -->
+    <script>
+        // --- DATA STORAGE ---
+        const promptsData = [
+            {
+                phase: "1. Definición",
+                prompt: "Eres una mujer de nombre Luna, de 30 años, Tech... Vas a evaluar Platzi. Responde sin filtros, con connotación boliviana (Sucre).",
+                result: "Define su postura 'Anti-Godínez'. Rechaza la oferta por ser 'generalista' (un océano con 1cm de profundidad). Prefiere la inmediatez de la documentación oficial gratuita."
+            },
+            {
+                phase: "2. Barreras Bancarias",
+                prompt: "Ahora mencióname cómo incluyes las barreras bancarias de Bolivia (2025) en tu análisis.",
+                result: "Identifica el 'corralito' de tarjetas y comisiones (ITF) como bloqueos críticos. Prioriza su liquidez en dólares para infraestructura de trabajo (Wise/Binance) antes que en educación."
+            },
+            {
+                phase: "3. Búsqueda Laboral",
+                prompt: "Y dime Luna, ¿hoy buscaste trabajo? ¿Qué plataformas usas?",
+                result: "Revela estrategia 'Sniper': Perfil en inglés en LinkedIn y contacto directo a CEOs. Usa Wellfound para startups. Rechaza portales locales por sueldos bajos en bolivianos."
+            },
+            {
+                phase: "4. Motivación",
+                prompt: "Si aprendes una nueva habilidad hoy (Data Science/Figma), ¿qué factor es determinante? [Selección Múltiple]",
+                result: "Selección: 'Que me dé herramientas para trabajar freelance'. El aprendizaje es supervivencia financiera y estrategia para monetizar YA, no para un currículum local."
+            },
+            {
+                phase: "5. Validación",
+                prompt: "¿Qué tan importante es para ti que el curso ofrezca una insignia o certificado verificable?",
+                result: "Selección: 'Es irrelevante'. Califica los certificados como 'vanidad para el algoritmo'. En el mercado remoto importa el portafolio ('Show, don't tell')."
+            },
+            {
+                phase: "6. INSIGHT CLAVE",
+                prompt: "Luna, dame tu opinión de la última promoción (Imagen Navidad: Bs 1.439). ¿Mueve tu intención de compra?",
+                result: "VEREDICTO NEGATIVO. 'Esa imagen me grita desesperación por flujo de caja'. Racionaliza el precio como costo de oportunidad: prefiere pagar 10 meses de IA que un curso. Percibe el 'regalo diario' como distracción.",
+                highlight: true
+            }
+        ];
+
+        // --- NAVIGATION LOGIC ---
+        function navigate(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden-section'));
+            // Show target section
+            document.getElementById(sectionId).classList.remove('hidden-section');
+            
+            // Update Nav Styling
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('nav-active', 'text-indigo-600', 'border-b-2', 'border-indigo-600'));
+            const activeBtn = document.getElementById('nav-' + sectionId);
+            if(activeBtn) activeBtn.classList.add('nav-active');
+
+            // Mobile menu handling
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+
+            // Trigger chart updates if necessary
+            if (sectionId === 'dashboard') renderPsychographicChart();
+            if (sectionId === 'analysis') renderBankingChart();
+            if (sectionId === 'insight') renderOpportunityChart();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- CHART GENERATION (Chart.js) ---
+        let psychoChartInstance = null;
+        let bankingChartInstance = null;
+        let oppChartInstance = null;
+
+        function renderPsychographicChart() {
+            const ctx = document.getElementById('psychographicChart').getContext('2d');
+            if (psychoChartInstance) psychoChartInstance.destroy();
+
+            psychoChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Profundidad Técnica', 'Libertad', 'Validación Externa', 'Ingresos USD', 'Comunidad'],
+                    datasets: [{
+                        label: 'Necesidades de Luna',
+                        data: [90, 100, 20, 100, 60],
+                        fill: true,
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: 'rgb(99, 102, 241)',
+                        pointBackgroundColor: 'rgb(99, 102, 241)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(99, 102, 241)'
+                    }, {
+                        label: 'Oferta Tradicional (Platzi)',
+                        data: [40, 50, 90, 30, 90], // High validation, community, but low technical depth for seniors
+                        fill: true,
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: 'rgb(239, 68, 68)',
+                        pointBackgroundColor: 'rgb(239, 68, 68)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(239, 68, 68)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: { line: { borderWidth: 3 } },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderBankingChart() {
+            const ctx = document.getElementById('bankingFrictionChart').getContext('2d');
+            if (bankingChartInstance) bankingChartInstance.destroy();
+
+            bankingChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Costo Nominal', 'Comisión Banco', 'Sobreprecio Dólar', 'ITF/Otros'],
+                    datasets: [{
+                        label: 'Estructura de Costo Real (Bs)',
+                        data: [1439, 143, 200, 50], // Simulated added costs
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(255, 159, 64, 0.6)',
+                            'rgba(153, 102, 255, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.x + ' Bs (Estimado)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderOpportunityChart() {
+            const ctx = document.getElementById('opportunityCostChart').getContext('2d');
+            if (oppChartInstance) oppChartInstance.destroy();
+
+            oppChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Consumo Pasivo (Platzi)', 'Herramientas Activas'],
+                    datasets: [{
+                        label: 'Potencial de Generación de Ingresos (Inmediato)',
+                        data: [20, 95], // Arbitrary score based on user insight
+                        backgroundColor: [
+                            'rgba(209, 213, 219, 0.8)', // Grey for passive
+                            'rgba(16, 185, 129, 0.8)'   // Green for active
+                        ]
+                    },
+                    {
+                        label: 'Costo (USD)',
+                        data: [200, 200],
+                        type: 'line',
+                        borderColor: '#6366f1',
+                        borderWidth: 2,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Score de Utilidad' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Inversión ($)' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    },
+                    plugins: {
+                        subtitle: {
+                            display: true,
+                            text: 'Comparativa de utilidad por los mismos $200'
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- POPULATE PROMPTS TABLE ---
+        function populatePrompts() {
+            const tbody = document.querySelector('#promptsTable tbody');
+            tbody.innerHTML = '';
+            promptsData.forEach(item => {
+                const rowClass = item.highlight ? 'bg-indigo-50 border-l-4 border-indigo-500' : 'bg-white border-b hover:bg-gray-50';
+                const textClass = item.highlight ? 'font-bold text-indigo-900' : 'text-indigo-700';
+                
+                const row = `
+                    <tr class="${rowClass}">
+                        <td class="px-6 py-4 font-medium text-gray-900">${item.phase}</td>
+                        <td class="px-6 py-4 text-gray-600 italic">"${item.prompt}"</td>
+                        <td class="px-6 py-4 ${textClass}">${item.result}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // --- SEARCH FUNCTIONALITY ---
+        document.getElementById('promptSearch').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#promptsTable tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if(text.includes(term)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // --- INITIALIZATION ---
+        window.addEventListener('load', () => {
+            navigate('dashboard');
+            populatePrompts();
+        });
+
+    </script>
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</body>
+</html>
