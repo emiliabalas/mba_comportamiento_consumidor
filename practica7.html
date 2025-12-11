@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuro-Auditoría: Platzi Bolivia 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            height: 300px;
+        }
+        .card-hover:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3); 
+            border-color: #34d399; 
+        }
+        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
+        .active-tab { border-bottom: 2px solid #34d399; color: #34d399; font-weight: 600; }
+        .inactive-tab { color: #94a3b8; } 
+        .inactive-tab:hover { color: #f8fafc; }
+        
+        /* Platzi Brand Colors Simulation */
+        .bg-platzi-dark { background-color: #0c1633; }
+        .text-platzi-green { color: #98ca3f; }
+        .bg-platzi-green { background-color: #98ca3f; }
+        .bg-platzi-pink { background-color: #ff4f78; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+    <!-- Application Structure Plan:
+         1. Dashboard Header: Context (Luna Archetype).
+         2. Tabbed Navigation:
+            - Diagnóstico Triuno: Grid of current pieces with their brain classification.
+            - Test Narcisista: Chart.js Doughnut showing "Brand vs Client" ratio.
+            - Códigos Reptilianos: Conceptual cards explained.
+            - Optimización (Before/After): Interactive toggle to transform the ad using REAL BRAND ASSETS simulation.
+         3. Dynamic Content: JS renders sections based on active tab.
+    -->
+</head>
+<body class="bg-slate-950 text-slate-300 min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-tight">Neuro-Auditoría: ¿A qué cerebro le hablas?</h1>
+                <p class="text-xs text-slate-500">Marca: Platzi | Arquetipo: "Luna" (Modo Supervivencia)</p>
+            </div>
+            <div class="text-right hidden sm:block">
+                <p class="text-sm font-semibold text-rose-400">Estado Actual: Córtex (Racional)</p>
+                <p class="text-xs text-slate-500">Taller 7 | E. Gamarra & V. Camacho</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-slate-900 shadow-sm mb-6 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8 overflow-x-auto" id="nav-tabs">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-12" id="main-content">
+        <!-- Dynamic Content -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-500 py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">© 2025 Neuro-Marketing Lab. Análisis de Comunicación Estratégica.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA STORE ---
+        const appData = {
+            tabs: [
+                { id: 'diagnostico', label: '1. Diagnóstico Triuno' },
+                { id: 'ratio', label: '2. Test Narcisista' },
+                { id: 'reptil', label: '3. Códigos Reptilianos' },
+                { id: 'optimizacion', label: '4. Optimización (Antes/Después)' }
+            ],
+            pieces: [
+                {
+                    id: 1,
+                    name: "Banner Home (Navidad)",
+                    brain: "CÓRTEX (Racional)",
+                    color: "text-blue-400",
+                    borderColor: "border-blue-500",
+                    desc: "Usa argumentos lógicos ('Ahorras Bs 351') y autoridad egocéntrica. Falla porque Luna no quiere calcular ahorros, quiere sobrevivir.",
+                    icon: "🧮"
+                },
+                {
+                    id: 2,
+                    name: "Post Facebook (AI vs Devs)",
+                    brain: "CÓRTEX + LÍMBICO (Miedo)",
+                    color: "text-yellow-400",
+                    borderColor: "border-yellow-500",
+                    desc: "Teoría histórica (COBOL) y lectura densa. Genera likes de validación pero no urgencia de compra. Es contenido de enciclopedia, no de trinchera.",
+                    icon: "📚"
+                },
+                {
+                    id: 3,
+                    name: "Email (Alianza TOEFL)",
+                    brain: "CÓRTEX (Institucional)",
+                    color: "text-purple-400",
+                    borderColor: "border-purple-500",
+                    desc: "Vende 'Cartonitis' (Diplomas) y abstracciones ('Éxito'). Luna sabe que las startups piden código, no papeles. Percibe el cupón como deuda.",
+                    icon: "🎓"
+                }
+            ],
+            ratioData: {
+                labels: ['Marca (Narcisismo)', 'Cliente (Empatía)'],
+                data: [75, 25],
+                colors: ['#f43f5e', '#10b981'] // Rose 500, Emerald 500
+            }
+        };
+
+        let currentState = {
+            activeTab: 'diagnostico',
+            optimizationActive: false
+        };
+
+        // --- INIT ---
+        function init() {
+            renderNav();
+            renderContent();
+        }
+
+        // --- RENDERERS ---
+        function renderNav() {
+            const nav = document.getElementById('nav-tabs');
+            nav.innerHTML = appData.tabs.map(tab => `
+                <button 
+                    onclick="switchTab('${tab.id}')"
+                    class="py-4 px-1 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${currentState.activeTab === tab.id ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-slate-500 hover:text-slate-200 hover:border-slate-700'}"
+                >
+                    ${tab.label}
+                </button>
+            `).join('');
+        }
+
+        function switchTab(tabId) {
+            currentState.activeTab = tabId;
+            renderNav();
+            renderContent();
+        }
+
+        function renderContent() {
+            const container = document.getElementById('main-content');
+            container.innerHTML = '';
+
+            switch(currentState.activeTab) {
+                case 'diagnostico': renderDiagnostico(container); break;
+                case 'ratio': renderRatio(container); break;
+                case 'reptil': renderReptil(container); break;
+                case 'optimizacion': renderOptimizacion(container); break;
+            }
+        }
+
+        // --- TAB 1: DIAGNOSTICO ---
+        function renderDiagnostico(container) {
+            const header = createSectionHeader('Diagnóstico del Cerebro Triuno', 'Análisis crítico de 3 piezas reales. Detectamos una desconexión entre el mensaje racional de la marca y la necesidad de supervivencia del usuario.');
+            
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-3 gap-6';
+
+            appData.pieces.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `bg-slate-900 p-6 rounded-xl border ${p.borderColor} border-opacity-30 card-hover flex flex-col`;
+                card.innerHTML = `
+                    <div class="text-4xl mb-4">${p.icon}</div>
+                    <h3 class="font-bold text-white text-lg mb-1">${p.name}</h3>
+                    <span class="text-xs font-mono mb-4 px-2 py-1 rounded bg-slate-800 w-fit ${p.color}">${p.brain}</span>
+                    <p class="text-sm text-slate-400 flex-grow">${p.desc}</p>
+                    <div class="mt-4 pt-4 border-t border-slate-800 text-xs text-rose-400 flex items-center">
+                        <span class="mr-2">⚠️</span> Falla: No activa instinto reptil
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            container.appendChild(header);
+            container.appendChild(grid);
+        }
+
+        // --- TAB 2: RATIO NARCISISTA ---
+        function renderRatio(container) {
+            const header = createSectionHeader('La Prueba del "Yo, Yo, Yo"', 'Análisis de texto del Banner Home. ¿Cuánto habla la marca de sí misma vs. del cliente?');
+            
+            const layout = document.createElement('div');
+            layout.className = 'flex flex-col md:flex-row items-center justify-center gap-12 bg-slate-900 p-8 rounded-xl border border-slate-800';
+
+            // Chart
+            const chartDiv = document.createElement('div');
+            chartDiv.className = 'chart-container w-full md:w-1/2';
+            chartDiv.innerHTML = '<canvas id="ratioChart"></canvas>';
+
+            // Text Analysis
+            const textDiv = document.createElement('div');
+            textDiv.className = 'w-full md:w-1/2 space-y-6';
+            textDiv.innerHTML = `
+                <div class="p-4 bg-slate-950 rounded border border-rose-900/50">
+                    <h4 class="text-rose-400 font-bold mb-2">🔴 Palabras Marca (Ego)</h4>
+                    <p class="text-slate-300 italic">"La escuela...", "Platzi...", "Empresas aprenden..."</p>
+                    <p class="text-xs text-slate-500 mt-2">Apelan a la autoridad y estatus institucional.</p>
+                </div>
+                <div class="p-4 bg-slate-950 rounded border border-emerald-900/50">
+                    <h4 class="text-emerald-400 font-bold mb-2">🟢 Palabras Cliente (Empatía)</h4>
+                    <p class="text-slate-300 italic">"¿Qué quieres aprender?"</p>
+                    <p class="text-xs text-slate-500 mt-2">Pregunta abierta, pero pasiva.</p>
+                </div>
+                <div class="text-center pt-4">
+                    <span class="text-xl font-bold text-white">Veredicto:</span>
+                    <span class="block text-sm text-slate-400">Comunicación Narcisista. El usuario es un espectador.</span>
+                </div>
+            `;
+
+            layout.appendChild(chartDiv);
+            layout.appendChild(textDiv);
+            container.appendChild(header);
+            container.appendChild(layout);
+
+            // Render Chart
+            setTimeout(() => {
+                const ctx = document.getElementById('ratioChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: appData.ratioData.labels,
+                        datasets: [{
+                            data: appData.ratioData.data,
+                            backgroundColor: appData.ratioData.colors,
+                            borderColor: '#0f172a',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: '#cbd5e1' } }
+                        }
+                    }
+                });
+            }, 100);
+        }
+
+        // --- TAB 3: CODIGOS REPTILIANOS ---
+        function renderReptil(container) {
+            const header = createSectionHeader('Activando Códigos Reptilianos', 'Rediseño conceptual aplicando los principios de decisión del cerebro primitivo.');
+            
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-8';
+
+            // Contrast Code
+            const contrast = document.createElement('div');
+            contrast.className = 'bg-slate-900 p-8 rounded-xl border border-slate-800 relative overflow-hidden group';
+            contrast.innerHTML = `
+                <div class="absolute top-0 right-0 bg-slate-800 text-slate-400 text-xs px-3 py-1 rounded-bl">Código #1</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Contraste Visual</h3>
+                <p class="text-slate-400 mb-6 text-sm">El cerebro reptil no decide si no ve la diferencia clara entre el dolor y el placer.</p>
+                
+                <div class="flex items-center justify-between bg-slate-950 p-4 rounded-lg border border-slate-800">
+                    <div class="text-center opacity-50">
+                        <div class="text-2xl">🏢</div>
+                        <div class="text-xs text-rose-400">Sueldo Local</div>
+                        <div class="text-xs text-slate-600">Bs 2.500</div>
+                    </div>
+                    <div class="text-2xl text-slate-600">vs</div>
+                    <div class="text-center">
+                        <div class="text-2xl">🌎</div>
+                        <div class="text-xs text-emerald-400">Salario Global</div>
+                        <div class="text-xs text-slate-300">$1,200 USD</div>
+                    </div>
+                </div>
+            `;
+
+            // Tangibility Code
+            const tangibility = document.createElement('div');
+            tangibility.className = 'bg-slate-900 p-8 rounded-xl border border-slate-800 relative overflow-hidden group';
+            tangibility.innerHTML = `
+                <div class="absolute top-0 right-0 bg-slate-800 text-slate-400 text-xs px-3 py-1 rounded-bl">Código #2</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Tangibilidad</h3>
+                <p class="text-slate-400 mb-6 text-sm">Dejamos de vender conceptos abstractos ("Educación") para vender objetos concretos ("Dinero/Libertad").</p>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-rose-400 line-through decoration-rose-500">"Aprende Tecnología"</span>
+                        <span class="text-emerald-400 font-bold">"Factura en Dólares"</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-rose-400 line-through decoration-rose-500">"Escuela Líder"</span>
+                        <span class="text-emerald-400 font-bold">"Pasaporte al Trabajo"</span>
+                    </div>
+                </div>
+            `;
+
+            grid.appendChild(contrast);
+            grid.appendChild(tangibility);
+            container.appendChild(header);
+            container.appendChild(grid);
+        }
+
+        // --- TAB 4: OPTIMIZACION (BEFORE/AFTER) ---
+        function renderOptimizacion(container) {
+            const header = createSectionHeader('Propuesta de Optimización', 'Transformación del Banner de Navidad. De un enfoque de "Gasto/Córtex" a uno de "Libertad/Reptil" (Siguiendo la línea gráfica de Platzi).');
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex flex-col items-center w-full';
+
+            // Toggle Button
+            const toggleDiv = document.createElement('div');
+            toggleDiv.className = 'mb-8 flex items-center space-x-4 bg-slate-900 p-2 rounded-full border border-slate-800';
+            toggleDiv.innerHTML = `
+                <span class="text-xs font-bold ${!currentState.optimizationActive ? 'text-white' : 'text-slate-500'}">ANTES (Diseño Actual)</span>
+                <button id="opt-toggle" class="w-12 h-6 rounded-full bg-slate-700 relative transition-colors duration-300 focus:outline-none">
+                    <div class="w-4 h-4 bg-white rounded-full absolute top-1 transition-transform duration-300 ${currentState.optimizationActive ? 'left-7 bg-platzi-green' : 'left-1'}"></div>
+                </button>
+                <span class="text-xs font-bold ${currentState.optimizationActive ? 'text-platzi-green' : 'text-slate-500'}">DESPUÉS (Propuesta Reptil)</span>
+            `;
+
+            // Ad Simulator Container
+            const adContainer = document.createElement('div');
+            adContainer.id = 'ad-simulator';
+            // Adjusted classes for better responsiveness and centering
+            adContainer.className = 'w-full max-w-5xl rounded-xl shadow-2xl transition-all duration-500 overflow-hidden relative border border-slate-800 mx-auto';
+            adContainer.style.height = '500px'; // Fixed height for consistent toggle
+            
+            wrapper.appendChild(toggleDiv);
+            wrapper.appendChild(adContainer);
+            container.appendChild(header);
+            container.appendChild(wrapper);
+
+            // Analysis Footer
+            const analysis = document.createElement('div');
+            analysis.id = 'ad-analysis';
+            analysis.className = 'mt-8 p-6 bg-slate-900 rounded-lg border border-slate-800 max-w-4xl mx-auto transition-all text-center';
+            container.appendChild(analysis);
+
+            // Add Event Listener
+            document.getElementById('opt-toggle').addEventListener('click', () => {
+                currentState.optimizationActive = !currentState.optimizationActive;
+                renderAdContent();
+            });
+
+            // Initial Render
+            renderAdContent();
+        }
+
+        function renderAdContent() {
+            const ad = document.getElementById('ad-simulator');
+            const analysis = document.getElementById('ad-analysis');
+            const btn = document.querySelector('#opt-toggle div');
+            
+            // Toggle Button Style
+            btn.className = `w-4 h-4 bg-white rounded-full absolute top-1 transition-transform duration-300 ${currentState.optimizationActive ? 'left-7 bg-platzi-green' : 'left-1'}`;
+
+            if (!currentState.optimizationActive) {
+                // BEFORE (CORTEX - REAL PLATZI DESIGN)
+                ad.className = 'w-full max-w-5xl rounded-xl shadow-2xl transition-all duration-500 overflow-hidden relative border border-slate-800 bg-platzi-dark flex flex-col font-sans';
+                ad.innerHTML = `
+                    <!-- Top Bar (Simulated) -->
+                    <div class="w-full flex justify-between items-center p-4 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-platzi-green rounded"></div> <!-- Logo Placeholder -->
+                            <span class="text-white font-bold text-lg">Platzi Live</span>
+                        </div>
+                        <div class="hidden md:flex gap-4 text-xs text-slate-400">
+                            <span>Cursos</span><span>Empresas</span><span>Blog</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Banner Area -->
+                    <div class="flex-grow flex flex-col md:flex-row items-center justify-center p-8 relative overflow-hidden">
+                        
+                        <!-- Geometric Decorations (CSS Shapes) -->
+                        <div class="absolute -left-10 top-10 w-32 h-32 bg-platzi-green transform rotate-45 opacity-20"></div>
+                        <div class="absolute -right-10 bottom-10 w-40 h-40 bg-platzi-pink transform -rotate-12 opacity-20 rounded-full blur-xl"></div>
+
+                        <!-- Content Left -->
+                        <div class="z-10 text-center md:text-left md:w-1/2 flex flex-col items-center md:items-start space-y-4">
+                            <span class="bg-platzi-pink text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Navidad</span>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-white leading-tight">Últimos días - Aprovecha el precio especial</h2>
+                            
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">🇧🇴</span>
+                                <span class="text-4xl font-bold text-white">Bs 1.439</span>
+                            </div>
+                            <div class="text-sm text-slate-400 space-y-1">
+                                <p><span class="text-platzi-green font-bold">Ahorras Bs 351</span></p>
+                                <p class="line-through">Antes Bs 1.790</p>
+                                <p>Paga a 4 cuotas sin intereses</p>
+                            </div>
+
+                            <button class="bg-white text-slate-900 hover:bg-slate-200 px-10 py-3 rounded-md font-bold text-sm transition-colors w-full md:w-auto mt-4">
+                                Suscríbete ⏱️
+                            </button>
+
+                            <!-- Timer Simulation -->
+                            <div class="flex gap-2 text-white text-xs mt-4 font-mono">
+                                <div class="bg-slate-800 p-2 rounded text-center"><span class="block font-bold text-lg">5d</span></div>
+                                <div class="bg-slate-800 p-2 rounded text-center"><span class="block font-bold text-lg">9h</span></div>
+                                <div class="bg-slate-800 p-2 rounded text-center"><span class="block font-bold text-lg">15m</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Content Right (Phone Mockup) -->
+                        <div class="z-10 mt-8 md:mt-0 md:w-1/2 flex justify-center">
+                            <div class="w-48 h-80 bg-slate-900 border-4 border-slate-700 rounded-3xl p-2 relative shadow-2xl">
+                                <div class="w-full h-full bg-slate-800 rounded-2xl flex flex-col items-center justify-center p-4 text-center">
+                                    <div class="w-8 h-8 bg-platzi-green rounded mb-2"></div>
+                                    <h4 class="text-white text-sm font-bold mb-1">De aquí a navidad</h4>
+                                    <h3 class="text-platzi-green text-lg font-extrabold mb-4 leading-tight">Un curso GRATIS cada día</h3>
+                                    <div class="grid grid-cols-2 gap-2 w-full">
+                                        <div class="bg-slate-700 h-10 rounded"></div>
+                                        <div class="bg-slate-700 h-10 rounded border-2 border-platzi-green bg-opacity-50"></div>
+                                        <div class="bg-slate-700 h-10 rounded"></div>
+                                        <div class="bg-slate-700 h-10 rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                analysis.innerHTML = `
+                    <h4 class="text-rose-400 font-bold mb-2">Diagnóstico: Diseño Racional (Córtex)</h4>
+                    <p class="text-slate-400 text-sm">El diseño actual es impecable pero frío. Se enfoca en la transacción ("Bs 1.439", "Ahorras") y la urgencia artificial del temporizador. Visualmente es "Marca" y "Software", no "Vida".</p>
+                `;
+
+            } else {
+                // AFTER (REPTIL - SPLIT SCREEN - PLATZI STYLE)
+                ad.className = 'w-full max-w-5xl rounded-xl shadow-2xl transition-all duration-500 overflow-hidden relative border border-slate-700 flex flex-col font-sans';
+                ad.innerHTML = `
+                    <!-- Top Bar (Brand Consistency) -->
+                    <div class="w-full flex justify-between items-center p-4 bg-platzi-dark border-b border-slate-800 z-20">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-platzi-green rounded"></div>
+                            <span class="text-white font-bold text-lg">Platzi Live</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Split Area -->
+                    <div class="flex-grow flex flex-col md:flex-row relative">
+                        
+                        <!-- LEFT: PAIN (Gray Office) -->
+                        <div class="w-full md:w-1/2 bg-slate-200 flex flex-col justify-center items-center p-12 relative overflow-hidden border-r-4 border-white">
+                            <!-- Simulated Image Background -->
+                            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, black 1px, transparent 0); background-size: 20px 20px;"></div>
+                            
+                            <div class="z-10 text-center grayscale opacity-80">
+                                <div class="text-6xl mb-4">🏢</div> <!-- Office Building Icon -->
+                                <div class="bg-white border-2 border-black p-4 rounded transform rotate-2 shadow-lg max-w-xs mx-auto">
+                                    <h4 class="font-bold text-black text-xl mb-1 uppercase">Solicitud Vacaciones</h4>
+                                    <div class="text-red-600 font-black text-4xl border-4 border-red-600 rounded p-1 transform -rotate-6 inline-block">DENEGADO</div>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-10 text-slate-500 font-bold uppercase tracking-widest text-xs">Realidad Local</div>
+                        </div>
+
+                        <!-- RIGHT: PLEASURE (Platzi Freedom) -->
+                        <div class="w-full md:w-1/2 bg-platzi-dark flex flex-col justify-center items-center p-12 relative overflow-hidden">
+                            <!-- Simulated Gradient Image -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600 opacity-20"></div>
+                            <div class="absolute -right-10 top-10 w-64 h-64 bg-platzi-green opacity-20 rounded-full blur-3xl"></div>
+
+                            <div class="z-10 text-center">
+                                <div class="text-6xl mb-4 animate-bounce">🏖️</div>
+                                <div class="relative">
+                                    <div class="text-6xl mb-2">💻</div>
+                                    <div class="absolute top-2 right-2 w-4 h-4 bg-platzi-green rounded-full shadow-lg border border-white"></div> <!-- Online Status -->
+                                </div>
+                                <h3 class="text-white font-bold text-2xl mt-4">Oficina Remota</h3>
+                                <p class="text-platzi-green text-sm">Ingresos en USD</p>
+                            </div>
+                        </div>
+
+                        <!-- CENTER: HEADLINE OVERLAY -->
+                        <div class="absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-30">
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg text-center leading-none mb-6">
+                                ¿SIN VACACIONES?<br>
+                                <span class="text-platzi-green">NO IMPORTA.</span>
+                            </h2>
+                            
+                            <!-- BRIDGE ELEMENT -->
+                            <div class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold shadow-2xl flex items-center gap-2 mb-8 transform hover:scale-105 transition pointer-events-auto cursor-default">
+                                <span>✈️</span> Pasaporte al Trabajo Remoto
+                            </div>
+
+                            <!-- CTA BUTTON (REPTILE) -->
+                            <button class="bg-platzi-green text-slate-900 hover:bg-white hover:text-platzi-green px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 pointer-events-auto border-4 border-platzi-dark">
+                                Quiero mi libertad geográfica ➜
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                analysis.innerHTML = `
+                    <h4 class="text-platzi-green font-bold mb-2">Diagnóstico: Diseño Reptiliano (Instinto)</h4>
+                    <p class="text-slate-300 text-sm">Mantiene la identidad de Platzi (Fuentes, Logos, Colores) pero cambia el mensaje. El <strong>Split Screen</strong> crea un contraste visual inmediato (Dolor vs Placer). No vende "cursos", vende la capacidad de viajar y trabajar (Libertad).</p>
+                `;
+            }
+        }
+
+        // --- UTILS ---
+        function createSectionHeader(title, desc) {
+            const div = document.createElement('div');
+            div.className = 'mb-8 text-center max-w-2xl mx-auto';
+            div.innerHTML = `
+                <h2 class="text-2xl font-bold text-white mb-2">${title}</h2>
+                <p class="text-slate-400 text-sm">${desc}</p>
+            `;
+            return div;
+        }
+
+        // Run
+        init();
+    </script>
+</body>
+</html>
