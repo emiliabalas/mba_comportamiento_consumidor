@@ -3,189 +3,602 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Navegación del Informe</title>
+    <title>Platzi Bolivia 2025: Estrategia de Supervivencia</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        :root {
-            --tech-black: #050505;
-            --tech-dark: #111111;
-            --tech-green: #00ff88;
-            --tech-text: #e0e0e0;
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        
+        /* Chart Container Styling */
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 400px; 
+        } 
+        @media (min-width: 768px) { 
+            .chart-container { height: 350px; } 
         }
 
-        body {
-            font-family: 'Urbanist', sans-serif;
-            background-color: var(--tech-black);
-            color: var(--tech-text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .card {
-            background-color: var(--tech-dark);
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: var(--tech-green);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .neon-title {
-            color: var(--tech-green);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-            font-weight: 900;
-        }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .gradient-text { background: linear-gradient(90deg, #166534, #98CA3F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .platzi-green { color: #98CA3F; }
+        
+        /* Utility for horizontal scrolling without scrollbar visual */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-green-100 selection:text-green-800">
 
-    <div class="container">
-        <h1 class="text-5xl font-extrabold mb-4">INFORME ESTRATÉGICO</h1>
-        <h2 class="text-2xl neon-title mb-12">NAVEGACIÓN DE LOS MÓDULOS</h2>
+    <!-- NEW: Top Bar Menu (Fixed List - No Dropdown) -->
+    <div class="bg-slate-900 text-slate-400 text-xs py-2 border-b border-slate-800 relative z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4">
+            
+            <!-- Left: Context -->
+            <div class="font-medium tracking-wide text-slate-500 hidden lg:block whitespace-nowrap">MBA Consumidor</div>
+            
+            <!-- Center: Practices List (Horizontal Scroll) -->
+            <div class="flex items-center gap-4 overflow-x-auto w-full md:w-auto no-scrollbar mask-gradient px-2 md:px-0">
+                <a href="resumen_p1_y_p2.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Presentación del Caso">Taller 1 y 2</a>
+                <span class="text-slate-700">|</span>
+                <a href="practica3.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Psicología & Empatía">Taller 3</a>
+                <span class="text-slate-700">|</span>
+                <a href="practica4.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Psicología & Empatía">Taller 4</a>
+                <span class="text-slate-700">|</span>
+                <a href="practica5.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Netnografía (La Tribu)">Taller 5</a>
+                <span class="text-slate-700">|</span>
+                <a href="practica6.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Journey AS-IS">Taller 6</a>
+                <span class="text-slate-700">|</span>
+                <a href="practica7.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Fricción & CX">Taller 7</a>
+                <span class="text-slate-700">|</span>
+                <a href="practica8.html" target="_blank" class="hover:text-green-400 whitespace-nowrap transition-colors" title="Entrevista IA (Luna)">Taller 8</a>
+            </div>
 
-        <p class="text-lg text-gray-400 mb-10">
-            Seleccione el módulo o taller al que desea acceder para ver el análisis de mercado y la estrategia de Platzi.
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <!-- Link 1: Resumen P1, P2, P3 -->
-            <a href="resumen_p1_y_p2.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">📊</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 1 & 2
-                </h3>
-                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                    Análisis de Mercado (P1), Psicología del Consumidor (P2) y Respuesta Estratégica (P3).
-                </p>
-                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A RESUMEN P1, P2
-                </div>
+            <!-- Right: Evidence Folder -->
+            <a href="https://emiliabalas.github.io/mba_comportamiento_consumidor/" target="_blank" class="flex items-center gap-1 text-slate-300 hover:text-white transition-colors font-semibold whitespace-nowrap bg-slate-800 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider">
+                <span>📂 Evidencias</span>
             </a>
-
-            <!-- Link 2: Práctica 3 (Netnografía) -->
-            <a href="practica3.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">⚡</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 3: NETNOGRAFÍA
-                </h3>
-                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                    Decodificación de la "Tribu Digital" (Los Antigodínez Tech), Códigos Culturales y Matriz Estratégica.
-                </p>
-                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A PRÁCTICA 3
-                </div>
-            </a>
-            
-        </div> </br>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-           <!-- Link 4: Práctica 4 (Netnografía) -->
-            <a href="practica 4.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">🗺</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 4: AUDITORÍA FORENSE: EL JOURNEY MAP ACTUAL
-                </h3>
-                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                   El viaje actual de Los Antigodínez Tech
-                </p>
-                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A PRÁCTICA 4
-                </div>
-            </a>
-
-            <!-- Link 4: Práctica 4 (Netnografía) -->
-            <a href="practica5.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">🎯</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 5: CAZADORES DE FRICCIÓN DIGITAL
-                </h3>
-                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                   Antigodínez Tech con problemas de Pago
-                </p>
-                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A PRÁCTICA 5
-                </div>
-            </a>
-            
-        </div></br>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-           <!-- Link 6: Práctica 6 (Arquetipo de buyer persona) -->
-            <a href="practica6.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">👩‍💻</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 6: ENTREVISTA CON EL VAMPIRO (DIGITAL)
-                </h3>
-                <p class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                   Buyer Persona Sintético  
-                </p>
-                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A PRÁCTICA 6
-                </div>
-            </a>
-            <!-- Link 6: Práctica 6 (Arquetipo de buyer persona) -->
-            <a href="practica7.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">🧠</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 7: ¿A QUÉ CEREBRO LE HABLAS?
-                </h3>
-               
-                <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A PRÁCTICA 7
-                </div>
-            </a>
-
-            
-        </div></br>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-           <!-- Link 6: Práctica 6 (Arquetipo de buyer persona) -->
-            <a href="practica8.html" class="card block group">
-                <div class="text-5xl mb-4 group-hover:neon-title">💰</div>
-                <h3 class="text-2xl font-bold mb-2 text-white group-hover:neon-title transition-colors">
-                    TALLER 8: DISEÑANDO EL JOURNEY SIN DOLOR (TO-BE)
-                </h3>
-                    <div class="mt-4 inline-block px-4 py-1 bg-[#00ff88] text-black text-xs font-bold rounded-full">
-                    IR A PRÁCTICA 8
-                </div>
-            </a>
-                        
         </div>
-        
-        <p class="text-xs text-gray-600 mt-16">
-            Documentación elaborada por Vianca Camacho Rios y Emilia Gamarra Balas para Platzi Bolivia.
-        </p>
     </div>
 
+    <!-- Main Navigation (Sticky) -->
+    <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="scrollToSection('hero')">
+                    <div class="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-green-400 font-bold text-xl">P</div>
+                    <span class="text-xl font-bold tracking-tight text-slate-900">Bolivia<span class="platzi-green">2025</span></span>
+                </div>
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('hero')" class="nav-btn text-sm font-medium text-slate-600 hover:text-green-600 transition-colors">Contexto</button>
+                    <button onclick="scrollToSection('diagnosis')" class="nav-btn text-sm font-medium text-slate-600 hover:text-green-600 transition-colors">Diagnóstico (AS-IS)</button>
+                    <button onclick="scrollToSection('insight')" class="nav-btn text-sm font-medium text-slate-600 hover:text-green-600 transition-colors">Insight IA</button>
+                    <button onclick="scrollToSection('strategy')" class="nav-btn text-sm font-medium text-slate-600 hover:text-green-600 transition-colors">Estrategia (TO-BE)</button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-slate-600 hover:text-green-600">
+                        <span class="text-2xl">☰</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col space-y-2">
+                    <button onclick="scrollToSection('hero')" class="text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Contexto</button>
+                    <button onclick="scrollToSection('diagnosis')" class="text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Diagnóstico</button>
+                    <button onclick="scrollToSection('insight')" class="text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Insight IA</button>
+                    <button onclick="scrollToSection('strategy')" class="text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Estrategia</button>
+                    <div class="border-t border-slate-100 my-2"></div>
+                    <a href="https://emiliabalas.github.io/mba_comportamiento_consumidor/" target="_blank" class="text-left px-4 py-2 text-sm text-green-700 font-bold bg-green-50">📂 Ver Carpeta de Evidencias</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero" class="relative pt-16 pb-20 lg:pt-24 lg:pb-28 overflow-hidden bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-green-700 uppercase bg-green-100 rounded-full">Informe Estratégico Final</div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+                De la Aspiración Académica a la <br class="hidden md:block" />
+                <span class="gradient-text">Supervivencia Financiera</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-600 mb-8 leading-relaxed">
+                En la Bolivia de 2025, la educación ya no es un lujo, es un mecanismo de defensa. 
+                ¿Cómo recuperamos el valor percibido cuando la IA commoditizó el conocimiento?
+            </p>
+            
+            <!-- Quick Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12 text-left">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm card-hover transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-red-100 rounded-lg text-red-600 text-2xl">📉</div>
+                        <span class="text-xs font-bold text-slate-400 uppercase">El Problema</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Filtro Divisa</h3>
+                    <p class="text-sm text-slate-600 mt-2">Bancos bloquean el 30-40% de transacciones internacionales. El usuario quiere pagar, el sistema no lo deja.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm card-hover transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-blue-100 rounded-lg text-blue-600 text-2xl">🧠</div>
+                        <span class="text-xs font-bold text-slate-400 uppercase">El Insight</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Cursos = Commodity</h3>
+                    <p class="text-sm text-slate-600 mt-2">"Luna" no paga por videos que la IA resume gratis. Paga por herramientas (La Pala) e infraestructura.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm card-hover transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-2 bg-green-100 rounded-lg text-green-600 text-2xl">🚀</div>
+                        <span class="text-xs font-bold text-slate-400 uppercase">La Estrategia</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Infrastructure Bundle</h3>
+                    <p class="text-sm text-slate-600 mt-2">Pasarela QR para desbloquear dinero + Bundle de Software (AWS/Notion) para justificar el precio.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Diagnosis Section (AS-IS) -->
+    <section id="diagnosis" class="py-16 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-slate-900">2. Diagnóstico: El "Messy Middle" Doloroso</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl">
+                    Analizamos el estado actual bajo la lente de la crisis. La tribu "Antigodínez Tech" se enfrenta a un entorno BANI y a un embudo de ventas roto por la fricción bancaria.
+                </p>
+            </div>
+
+            <!-- Interactive Diagnosis Tabs -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <!-- Tab Headers -->
+                <div class="flex border-b border-slate-200 overflow-x-auto">
+                    <button onclick="switchTab('bani')" id="tab-bani" class="flex-1 px-6 py-4 text-sm font-medium text-green-700 border-b-2 border-green-500 bg-green-50 focus:outline-none transition-colors whitespace-nowrap">
+                        🌪️ Matriz BANI
+                    </button>
+                    <button onclick="switchTab('tribu')" id="tab-tribu" class="flex-1 px-6 py-4 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50 focus:outline-none transition-colors whitespace-nowrap">
+                        👩‍💻 La Tribu (Target)
+                    </button>
+                    <button onclick="switchTab('friccion')" id="tab-friccion" class="flex-1 px-6 py-4 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50 focus:outline-none transition-colors whitespace-nowrap">
+                        📉 Fricción de Pagos
+                    </button>
+                </div>
+
+                <!-- Tab Content Area -->
+                <div class="p-6 md:p-8 min-h-[400px]">
+                    
+                    <!-- Content: BANI -->
+                    <div id="content-bani" class="tab-content block animate-fade-in">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-5 rounded-lg border border-slate-200 bg-red-50/50 hover:bg-red-50 transition-colors">
+                                <h4 class="font-bold text-red-700 mb-2">B - Brittle (Frágil)</h4>
+                                <p class="text-sm text-slate-600">La economía personal se rompe si la tarjeta es rechazada. No hay segunda oportunidad en el checkout por miedo a comisiones ocultas.</p>
+                            </div>
+                            <div class="p-5 rounded-lg border border-slate-200 bg-orange-50/50 hover:bg-orange-50 transition-colors">
+                                <h4 class="font-bold text-orange-700 mb-2">A - Anxious (Ansioso)</h4>
+                                <p class="text-sm text-slate-600">Compran por FOMO y miedo a ser reemplazados por la IA. La educación funciona como un "ansiolítico" temporal.</p>
+                            </div>
+                            <div class="p-5 rounded-lg border border-slate-200 bg-blue-50/50 hover:bg-blue-50 transition-colors">
+                                <h4 class="font-bold text-blue-700 mb-2">N - Non-linear (No lineal)</h4>
+                                <p class="text-sm text-slate-600">El camino "Universidad -> Título -> Trabajo" ha muerto. Aprendizaje fragmentado (TikTok + Mentoría + Piratería).</p>
+                            </div>
+                            <div class="p-5 rounded-lg border border-slate-200 bg-purple-50/50 hover:bg-purple-50 transition-colors">
+                                <h4 class="font-bold text-purple-700 mb-2">I - Incomprehensible</h4>
+                                <p class="text-sm text-slate-600">El usuario tiene Bolivianos, pero el sistema dice "Fondos Insuficientes" por cupos de divisa. Confusión sistémica.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content: Tribu -->
+                    <div id="content-tribu" class="tab-content hidden animate-fade-in">
+                        <div class="flex flex-col md:flex-row gap-8">
+                            <!-- Profile Card -->
+                            <div class="w-full md:w-1/3 bg-slate-900 text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-green-500 opacity-20 rounded-full -mr-8 -mt-8"></div>
+                                <div class="text-center relative z-10">
+                                    <div class="w-20 h-20 bg-gradient-to-tr from-green-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl shadow-lg">⚡</div>
+                                    <h3 class="text-2xl font-bold">"Luna"</h3>
+                                    <p class="text-green-400 font-mono text-xs uppercase tracking-widest mt-1">Antigodínez Tech</p>
+                                </div>
+                                <div class="mt-6 space-y-3 text-sm">
+                                    <div class="flex justify-between border-b border-slate-700 pb-2">
+                                        <span class="text-slate-400">Objetivo</span>
+                                        <span class="font-semibold">Ganar en USD</span>
+                                    </div>
+                                    <div class="flex justify-between border-b border-slate-700 pb-2">
+                                        <span class="text-slate-400">Enemigo</span>
+                                        <span class="font-semibold">Bancos Locales</span>
+                                    </div>
+                                    <div class="flex justify-between border-b border-slate-700 pb-2">
+                                        <span class="text-slate-400">Valor</span>
+                                        <span class="font-semibold">Velocidad > Títulos</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Empathy Map Details -->
+                            <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                    <h5 class="font-bold text-slate-800 text-sm uppercase mb-2 text-red-500">Pain (Dolor)</h5>
+                                    <p class="text-sm text-slate-600">Frustración por barrera de inglés y rechazo de pagos. Sensación de estafa si el soporte no responde rápido ("Ghosting").</p>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                    <h5 class="font-bold text-slate-800 text-sm uppercase mb-2 text-green-600">Gain (Deseo)</h5>
+                                    <p class="text-sm text-slate-600">Insignia verde en LinkedIn ("Efecto Halo"), libertad geográfica y el "Hack" de vivir barato ganando fuerte.</p>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                    <h5 class="font-bold text-slate-800 text-sm uppercase mb-2 text-blue-600">Lo que Ve</h5>
+                                    <p class="text-sm text-slate-600">Amigos presumiendo trabajos remotos y noticias de crisis económica constante.</p>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                    <h5 class="font-bold text-slate-800 text-sm uppercase mb-2 text-purple-600">Lo que Oye</h5>
+                                    <p class="text-sm text-slate-600">"La universidad es una estafa", presión familiar por seguridad vs realidad del mercado.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content: Friction Chart -->
+                    <div id="content-friccion" class="tab-content hidden animate-fade-in">
+                        <div class="flex flex-col lg:flex-row gap-8 items-center">
+                            <div class="w-full lg:w-1/2">
+                                <h3 class="text-xl font-bold text-slate-800 mb-3">El "Embudo de la Muerte"</h3>
+                                <p class="text-slate-600 text-sm mb-4">
+                                    Este gráfico visualiza el hallazgo más crítico: Tenemos Product-Market Fit (Interés alto), pero fallamos en el <strong>Payment-Market Fit</strong>.
+                                </p>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-center p-2 bg-red-50 rounded border border-red-100">
+                                        <span class="font-bold text-red-600 mr-2">⛔ 70% Caída</span>
+                                        <span class="text-slate-700">Rechazo bancario por falta de divisas.</span>
+                                    </li>
+                                    <li class="flex items-center p-2 bg-slate-50 rounded border border-slate-100">
+                                        <span class="font-bold text-slate-600 mr-2">👻 Miedo</span>
+                                        <span class="text-slate-700">Usuario abandona por temor a cobros dobles.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="w-full lg:w-1/2">
+                                <div class="chart-container">
+                                    <canvas id="frictionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insight Section (AI Validation) -->
+    <section id="insight" class="py-16 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-900">3. La Verdad de la IA</h2>
+                <p class="mt-2 text-slate-600">Validamos nuestras hipótesis simulando a "Luna" con IA. El resultado destruyó el modelo de cursos grabados.</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-slate-50 rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-900 px-4 py-3 flex items-center gap-2 border-b border-slate-800">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="ml-2 text-xs font-mono text-slate-400">Simulación_Entrevista_Luna.txt</span>
+                </div>
+                
+                <div class="p-6 space-y-6">
+                    <!-- Bot Msg -->
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs">🤖</div>
+                        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100 max-w-md">
+                            <p class="text-sm text-slate-600 font-medium">Hola Luna. Tienes una oferta especial: Año Platzi por Bs 1.439. ¿Te suscribes?</p>
+                        </div>
+                    </div>
+
+                    <!-- User Msg (Insight) -->
+                    <div class="flex gap-3 flex-row-reverse">
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xs">L</div>
+                        <div class="bg-green-50 p-4 rounded-2xl rounded-tr-none shadow-sm border border-green-100 max-w-lg">
+                            <p class="text-sm text-slate-800 font-bold mb-2">"No. Bs 1.439 no es un ahorro, es capital de trabajo."</p>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                "Prefiero invertir ese dinero en ChatGPT Plus, un servidor o un dominio (la pala) que en cursos (el mapa). <span class="bg-yellow-100 px-1 font-semibold">La pala me da dinero hoy; el curso, tal vez mañana.</span> Si no me das herramientas, es un gasto."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 p-4 text-center border-t border-slate-200">
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Conclusión Estratégica</p>
+                    <p class="text-slate-900 font-bold mt-1">El curso es un Commodity. Debemos vender Infraestructura.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Section (TO-BE) -->
+    <section id="strategy" class="py-16 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">4. Estrategia TO-BE: Habilitando la Economía</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl">
+                    Nuestra propuesta no explica qué es Platzi, sino cómo Platzi pone dinero en el bolsillo del usuario. Pivote táctico: De Escuela a Socio de Infraestructura.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Left: The Bundle Visualization -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="mb-6">
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold uppercase">Solución de Valor</span>
+                        <h3 class="text-xl font-bold text-slate-900 mt-2">The Infrastructure Bundle</h3>
+                        <p class="text-sm text-slate-500 mt-1">Dejamos de competir con la IA. Absorbemos costos operativos.</p>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="valueStackChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-slate-50 rounded border border-slate-100 text-center">
+                        <p class="text-xs text-slate-500">
+                            El usuario percibe que recibe <strong>$500+ en software</strong> pagando solo $200. <br>
+                            El curso se vuelve un "regalo".
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: The Transactional Fix & ROI -->
+                <div class="space-y-6">
+                    <!-- QR Fix -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between h-full">
+                        <div>
+                            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold uppercase">Solución Transaccional</span>
+                            <h3 class="text-xl font-bold text-slate-900 mt-2">Pasarela Nativa QR</h3>
+                            <p class="text-sm text-slate-500 mt-2">
+                                Integración inmediata de PagosNet/QR Simple para recuperar el 30-40% de ventas rebotadas.
+                            </p>
+                            
+                            <!-- Mockup QR -->
+                            <div class="mt-6 border border-slate-200 rounded-lg p-4 bg-slate-50 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-slate-500 font-semibold uppercase">Checkout</p>
+                                    <p class="text-slate-900 font-bold">Total: Bs 1.439</p>
+                                    <p class="text-xs text-green-600 mt-1">✓ Pagado con QR (Sin cupo USD)</p>
+                                </div>
+                                <div class="w-12 h-12 bg-white border border-slate-200 p-1 rounded">
+                                    <div class="w-full h-full bg-slate-800 pattern-grid-lg"></div> 
+                                    <!-- abstract QR rep -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Talent Match Box -->
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-green-500 rounded-full blur-3xl opacity-20 -mr-10 -mt-10"></div>
+                        <div class="relative z-10">
+                            <h3 class="text-xl font-bold mb-2">Platzi Talent Match</h3>
+                            <p class="text-slate-300 text-sm mb-4">
+                                La respuesta definitiva a "¿Por qué pagar si tengo IA?". <br>
+                                La IA enseña, nosotros contratamos.
+                            </p>
+                            <div class="border-t border-slate-700 pt-3">
+                                <p class="text-green-400 font-bold text-lg">ROI Garantizado</p>
+                                <p class="text-xs text-slate-400">1 Trabajo Remoto = 5 años de suscripción pagada.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator -->
+    <section class="py-16 bg-white border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8">Calculadora de Libertad Financiera</h2>
+            
+            <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    <!-- Investment -->
+                    <div class="text-center">
+                        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Inversión (Costo)</p>
+                        <p class="text-4xl font-bold text-red-500">$200</p>
+                        <p class="text-xs text-slate-400 mt-1">Suscripción Anual</p>
+                    </div>
+
+                    <!-- Operator -->
+                    <div class="text-2xl font-bold text-slate-300">VS</div>
+
+                    <!-- Return -->
+                    <div class="text-center relative">
+                        <p class="text-xs uppercase tracking-widest text-green-600 mb-2">Retorno (Valor)</p>
+                        <p id="roiValue" class="text-5xl font-bold text-slate-900">$0</p>
+                        <p class="text-xs text-slate-400 mt-1">Herramientas + 1er Sueldo</p>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button onclick="calculateROI()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg shadow-green-200 transition-all transform hover:scale-105 active:scale-95">
+                        Ver Impacto Económico
+                    </button>
+                    <p id="roiMessage" class="mt-4 text-sm text-slate-500 opacity-0 transition-opacity duration-500">
+                        ¡El Bundle paga la suscripción sola! Riesgo financiero = 0.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-white font-bold text-lg mb-4">Conclusiones Finales</h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-start"><span class="text-green-500 mr-2">✓</span> Platzi pasa de ser Gasto Educativo a Costo Operativo.</li>
+                    <li class="flex items-start"><span class="text-green-500 mr-2">✓</span> QR desbloquea el dinero atrapado en bancos.</li>
+                    <li class="flex items-start"><span class="text-green-500 mr-2">✓</span> No vendemos clases, vendemos salidas laborales.</li>
+                </ul>
+            </div>
+            <div class="text-right flex flex-col justify-end">
+                <p class="text-xs">Informe Final Comportamiento del Consumidor</p>
+                <p class="text-white font-bold mt-1">Bolivia 2025 Strategy Deck</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script>
+        // --- Tab Logic ---
+        function switchTab(tabId) {
+            // Hide all tabs
+            ['bani', 'tribu', 'friccion'].forEach(id => {
+                document.getElementById('content-' + id).classList.add('hidden');
+                document.getElementById('content-' + id).classList.remove('block');
+                
+                // Reset button styles
+                const btn = document.getElementById('tab-' + id);
+                btn.classList.remove('text-green-700', 'border-b-2', 'border-green-500', 'bg-green-50');
+                btn.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:bg-slate-50');
+            });
+
+            // Show selected
+            const content = document.getElementById('content-' + tabId);
+            content.classList.remove('hidden');
+            content.classList.add('block');
+
+            // Style selected button
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.remove('text-slate-500', 'hover:text-slate-700', 'hover:bg-slate-50');
+            activeBtn.classList.add('text-green-700', 'border-b-2', 'border-green-500', 'bg-green-50');
+        }
+
+        // --- Scroll Logic ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if(el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- Charts Configuration (Chart.js) ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        
+        // 1. Friction Chart (Bar)
+        const ctxFriction = document.getElementById('frictionChart').getContext('2d');
+        new Chart(ctxFriction, {
+            type: 'bar',
+            data: {
+                labels: ['Trigger (Interés)', 'Evaluación', 'Intento Pago', 'Conversión'],
+                datasets: [{
+                    label: 'Usuarios',
+                    data: [1000, 850, 700, 200], // Massive drop
+                    backgroundColor: ['#cbd5e1', '#cbd5e1', '#ef4444', '#22c55e'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                if(ctx.dataIndex === 2) return "Bloqueo Masivo Bancario";
+                                return ctx.raw + " Usuarios";
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 2. Value Stack Chart (Stacked Bar)
+        const ctxValue = document.getElementById('valueStackChart').getContext('2d');
+        new Chart(ctxValue, {
+            type: 'bar',
+            data: {
+                labels: ['Costo Suscripción', 'Valor Recibido (TO-BE)'],
+                datasets: [
+                    {
+                        label: 'Precio Platzi',
+                        data: [200, 0],
+                        backgroundColor: '#ef4444' // Cost
+                    },
+                    {
+                        label: 'Contenido (Cursos)',
+                        data: [0, 200],
+                        backgroundColor: '#94a3b8' // Neutral
+                    },
+                    {
+                        label: 'AWS/Tools',
+                        data: [0, 500],
+                        backgroundColor: '#eab308' // Gold/Value
+                    },
+                    {
+                        label: 'Talent Match',
+                        data: [0, 1000],
+                        backgroundColor: '#22c55e' // Green/Growth
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: { mode: 'index', intersect: false },
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { stacked: true, beginAtZero: true, title: {display: true, text: 'Valor USD'} }
+                }
+            }
+        });
+
+        // --- ROI Calculator Animation ---
+        function calculateROI() {
+            const el = document.getElementById('roiValue');
+            const msg = document.getElementById('roiMessage');
+            
+            let start = 0;
+            let end = 1700;
+            let duration = 1500;
+            let startTime = null;
+
+            function animation(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                
+                // Easing function
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                
+                const currentVal = Math.floor(easeOutQuart * (end - start) + start);
+                el.innerText = "$" + currentVal;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animation);
+                } else {
+                    el.innerText = "$1700+";
+                    msg.classList.remove('opacity-0');
+                }
+            }
+            requestAnimationFrame(animation);
+        }
+
+        // Initialize Tab
+        document.addEventListener('DOMContentLoaded', () => {
+           // Start with BANI tab active (default in HTML logic)
+        });
+    </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
